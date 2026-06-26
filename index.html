@@ -563,7 +563,7 @@ tbody tr:hover td{background:var(--gray-50)}
               <div style="font-family:var(--font-head);font-size:14px;font-weight:500">Match pendente</div>
               <span class="tag tag-teal">Aguardando aceite</span>
             </div>
-            <div style="font-size:13px;color:var(--gray-600);line-height:1.7;margin-bottom:12px">Permuta trilateral com ZRP Tecnologia e UP Financeiro. Você oferece consultoria financeira, recebe desenvolvimento de site.</div>
+            <div style="font-size:13px;color:var(--gray-600);line-height:1.7;margin-bottom:12px">Permuta trilateral com U Properties e U Holdings. Você oferece harmonização facial, recebe valuation empresarial.</div>
             <div style="display:flex;gap:8px">
               <button class="btn btn-teal btn-sm" onclick="toast('Permuta aceita! Partes notificadas.')">Aceitar match</button>
               <button class="btn btn-ghost btn-sm" onclick="nav('matches')">Ver detalhes</button>
@@ -794,43 +794,44 @@ tbody tr:hover td{background:var(--gray-50)}
 // ===== DATA =====
 const catClass={Saúde:"cat-saude",Tecnologia:"cat-tech",Financeiro:"cat-financeiro",Jurídico:"cat-juridico",Marketing:"cat-marketing",Educação:"cat-educacao"};
 const services=[
-  {id:1,nome:"Harmonização Facial Completa",cat:"Saúde",desc:"Procedimento estético facial com ácido hialurônico, preenchimento labial e bioremodelação. Inclui avaliação, aplicação e retorno em 30 dias.",valor:8000,prov:"Dra. Tatiana Melo",provIni:"DT",cidade:"São Paulo, SP",formato:"Presencial",prazo:"1 dia"},
-  {id:2,nome:"Site Profissional com IA Integrada",cat:"Tecnologia",desc:"Desenvolvimento de site moderno com inteligência artificial integrada, painel administrativo, SEO avançado e integração com CRM.",valor:12000,prov:"ZRP Tecnologia",provIni:"ZR",cidade:"Remoto",formato:"Remoto",prazo:"30 dias úteis"},
-  {id:3,nome:"Valuation Empresarial",cat:"Financeiro",desc:"Avaliação completa de empresas para captação de investimento, expansão ou fusões e aquisições. Laudo técnico detalhado.",valor:9000,prov:"UP Financeiro",provIni:"UP",cidade:"São Paulo, SP",formato:"Híbrido",prazo:"15 dias úteis"},
-  {id:4,nome:"Assessoria Jurídica Empresarial",cat:"Jurídico",desc:"Consultoria jurídica para contratos, compliance, proteção patrimonial e estruturação societária.",valor:6000,prov:"Dr. Marcos Lima",provIni:"ML",cidade:"Rio de Janeiro, RJ",formato:"Remoto",prazo:"7 dias úteis"},
-  {id:5,nome:"Gestão de Redes Sociais — 6 meses",cat:"Marketing",desc:"Produção de conteúdo estratégico e gestão completa das redes por 6 meses: Instagram, LinkedIn e YouTube. Relatórios mensais.",valor:7500,prov:"Ana Paula Marketing",provIni:"AP",cidade:"Remoto",formato:"Remoto",prazo:"6 meses"},
-  {id:6,nome:"Programa de Mentoria Executiva",cat:"Educação",desc:"15 sessões de mentoria individual para aceleração de carreira e desenvolvimento de liderança empresarial.",valor:5000,prov:"Ricardo Mendes",provIni:"RM",cidade:"Remoto",formato:"Remoto",prazo:"15 semanas"},
-  {id:7,nome:"Programa de Fisioterapia Preventiva",cat:"Saúde",desc:"Avaliação postural completa e 12 sessões de fisioterapia preventiva e funcional para executivos.",valor:5500,prov:"Dra. Carla Nunes",provIni:"CN",cidade:"Curitiba, PR",formato:"Presencial",prazo:"3 meses"},
-  {id:8,nome:"Automação de Processos com Python",cat:"Tecnologia",desc:"Desenvolvimento de automações e scripts personalizados para otimizar processos internos. Entrega com documentação.",valor:8000,prov:"DevTech Solutions",provIni:"DV",cidade:"Remoto",formato:"Remoto",prazo:"21 dias úteis"},
-  {id:9,nome:"Campanha de Fotografia Corporativa",cat:"Marketing",desc:"Ensaio fotográfico corporativo completo: headshots, produto e evento. Entrega de 100+ fotos editadas em 72h.",valor:5000,prov:"Studio Lens",provIni:"SL",cidade:"São Paulo, SP",formato:"Presencial",prazo:"72 horas"},
+  {id:1,nome:"Harmonização Facial e Estética Odontológica",cat:"Saúde",desc:"Clínica multidisciplinar com mais de 50 anos de mercado em BH. Pacote completo de harmonização facial, estética dental, facetas e clareamento. Inclui avaliação personalizada, aplicação e retorno. Especialistas Dr. Fernando Paiva (UFMG) e Dra. Renata Paiva (PUC-MG).",valor:8000,prov:"Paiva Clínica Odontológica",provIni:"PC",cidade:"Belo Horizonte, MG",formato:"Presencial",prazo:"A combinar"},
+  {id:2,nome:"Valuation Empresarial",cat:"Financeiro",desc:"Avaliação completa de empresas para captação de investimento, fusões, aquisições ou preparação para venda. Laudo técnico detalhado com metodologias DCF e múltiplos de mercado. Relatório executivo incluso.",valor:10000,prov:"U Properties",provIni:"UP",cidade:"São Paulo, SP",formato:"Híbrido",prazo:"15 dias úteis"},
+  {id:3,nome:"Assessoria Financeira para Venda de Empresa",cat:"Financeiro",desc:"Preparação completa de empresa para processo de venda ou captação de investidor: organização financeira, due diligence, information memorandum, valuation e suporte em negociações. Ideal para M&A de médio porte.",valor:30000,prov:"U Holdings",provIni:"UH",cidade:"São Paulo, SP",formato:"Híbrido",prazo:"60 dias úteis"},
+  {id:4,nome:"Kit Personalizado Família — Fio de Afeto",cat:"Marketing",desc:"Kits de roupas personalizadas para toda a família: camisas UV com proteção solar FPS 50+, pijamas e bodies para bebê, tudo com nome e arte exclusiva. Mais de 30 mil famílias atendidas. Enviamos para todo o Brasil.",valor:5000,prov:"Fio de Afeto",provIni:"FA",cidade:"Fortaleza, CE",formato:"Remoto",prazo:"10 dias úteis"},
+  {id:5,nome:"Kit Corporativo Personalizado — Fio de Afeto",cat:"Marketing",desc:"Presentes corporativos personalizados em escala: camisas, pijamas, bodies e acessórios com a identidade da sua empresa. Ideal para clientes, colaboradores e eventos. Alta qualidade, personalização em tempo real e entrega antes do prazo.",valor:6000,prov:"Fio de Afeto",provIni:"FA",cidade:"Fortaleza, CE",formato:"Remoto",prazo:"15 dias úteis"},
+  {id:6,nome:"Lancha Semi-Nova — 28 pés",cat:"Outro",desc:"Lancha esportiva 28 pés, motor 250HP Mercury, ano 2021, estado de conservação impecável. Completa com capota, Som, GPS e equipamentos de segurança. Documentação em dia. Ideal para lazer e entretenimento executivo.",valor:280000,prov:"Náutica Premium",provIni:"NP",cidade:"São Paulo, SP",formato:"Presencial",prazo:"Imediato"},
+  {id:7,nome:"Consultoria Jurídica Empresarial",cat:"Jurídico",desc:"Assessoria jurídica completa para empresas: contratos, compliance, proteção patrimonial, estruturação societária e M&A. Equipe especializada com atendimento personalizado e resposta ágil.",valor:8000,prov:"Escritório Jurídico Referência",provIni:"EJ",cidade:"São Paulo, SP",formato:"Híbrido",prazo:"7 dias úteis"},
+  {id:8,nome:"Equipamento Médico — Ultrassom 4D",cat:"Saúde",desc:"Aparelho de ultrassom 4D de última geração, marca Philips, modelo EPIQ 7, ano 2022. Estado impecável, manutenção em dia, manual e acessórios inclusos. Ideal para clínicas e consultórios.",valor:120000,prov:"MedEquip Brasil",provIni:"ME",cidade:"São Paulo, SP",formato:"Presencial",prazo:"Imediato"},
+  {id:9,nome:"Gestão de Tráfego Pago — 6 meses",cat:"Marketing",desc:"Gestão profissional de campanhas Google Ads e Meta Ads por 6 meses. Inclui estratégia, criação de anúncios, otimização contínua e relatórios mensais detalhados. Foco em geração de leads qualificados.",valor:7500,prov:"Agência Digital Crescimento",provIni:"AD",cidade:"Remoto",formato:"Remoto",prazo:"6 meses"},
+  {id:10,nome:"Frota de Veículos Executivos — 3 unidades",cat:"Outro",desc:"3 veículos executivos seminovos (Toyota Corolla 2023), em excelente estado, com manutenção em dia e documentação regularizada. Ideais para locação executiva, transporte corporativo ou revenda.",valor:200000,prov:"Executive Motors",provIni:"EM",cidade:"Belo Horizonte, MG",formato:"Presencial",prazo:"Imediato"},
 ];
 const provColors=[["#E4F5F2","#0D6E5E"],["#DCFCE7","#15803D"],["#FBF3E2","#8A6420"],["#ECEFFE","#3D4FA0"],["#FBE9E6","#D95F4B"],["#EFF0EF","#4F5752"],["#E4F5F2","#0F8370"],["#DCFCE7","#166534"],["#FBF3E2","#92620A"]];
 const matches=[
-  {id:1,novo:true,tipo:"Trilateral",partes:[{nome:"Dra. Tatiana",svc:"Harmonização Facial",val:8000,recebe:"UP Financeiro"},{nome:"UP Financeiro",svc:"Valuation Empresarial",val:9000,recebe:"ZRP Tecnologia"},{nome:"ZRP Tecnologia",svc:"Site com IA",val:12000,recebe:"Dra. Tatiana"}],status:"Aguardando aceite"},
-  {id:2,novo:true,tipo:"Bilateral",partes:[{nome:"Dr. Marcos Lima",svc:"Assessoria Jurídica",val:6000,recebe:"Ana Paula Marketing"},{nome:"Ana Paula Marketing",svc:"Gestão de Redes 6m",val:7500,recebe:"Dr. Marcos Lima"}],status:"Em negociação"},
-  {id:3,novo:false,tipo:"Bilateral",partes:[{nome:"Ricardo Mendes",svc:"Mentoria Executiva",val:5000,recebe:"DevTech Solutions"},{nome:"DevTech Solutions",svc:"Automação Python",val:8000,recebe:"Ricardo Mendes"}],status:"Contrato assinado"},
+  {id:1,novo:true,tipo:"Trilateral",partes:[{nome:"Paiva Clínica",svc:"Harmonização Facial",val:8000,recebe:"U Holdings"},{nome:"U Holdings",svc:"Assessoria p/ Venda",val:30000,recebe:"U Properties"},{nome:"U Properties",svc:"Valuation Empresarial",val:10000,recebe:"Paiva Clínica"}],status:"Aguardando aceite"},
+  {id:2,novo:true,tipo:"Bilateral",partes:[{nome:"Fio de Afeto",svc:"Kit Corporativo",val:6000,recebe:"Escritório Jurídico"},{nome:"Escritório Jurídico",svc:"Consultoria Jurídica",val:8000,recebe:"Fio de Afeto"}],status:"Em negociação"},
+  {id:3,novo:false,tipo:"Bilateral",partes:[{nome:"Náutica Premium",svc:"Lancha 28 pés",val:280000,recebe:"Executive Motors"},{nome:"Executive Motors",svc:"Frota Executiva",val:200000,recebe:"Náutica Premium"}],status:"Contrato assinado"},
 ];
 const txns=[
-  {tipo:"in",desc:"Permuta recebida — ZRP Tecnologia",data:"28 mai 2025",val:12000},
-  {tipo:"fee",desc:"Fee 10% — Permuta #47 (via Pix)",data:"28 mai 2025",val:-1200},
-  {tipo:"in",desc:"Permuta recebida — Dr. Marcos Lima",data:"15 mai 2025",val:6000},
+  {tipo:"in",desc:"Permuta recebida — U Properties",data:"28 mai 2025",val:10000},
+  {tipo:"fee",desc:"Fee 10% — Permuta #47 (via Pix)",data:"28 mai 2025",val:-1000},
+  {tipo:"in",desc:"Permuta recebida — Fio de Afeto",data:"15 mai 2025",val:6000},
   {tipo:"fee",desc:"Fee 10% — Permuta #38 (via Pix)",data:"15 mai 2025",val:-600},
-  {tipo:"in",desc:"Permuta recebida — Ricardo Mendes",data:"02 mai 2025",val:5000},
-  {tipo:"fee",desc:"Fee 10% — Permuta #29 (via Pix)",data:"02 mai 2025",val:-500},
-  {tipo:"out",desc:"Permuta enviada — Dra. Tatiana",data:"10 abr 2025",val:-8000},
+  {tipo:"in",desc:"Permuta recebida — U Holdings",data:"02 mai 2025",val:30000},
+  {tipo:"fee",desc:"Fee 10% — Permuta #29 (via Pix)",data:"02 mai 2025",val:-3000},
+  {tipo:"out",desc:"Permuta enviada — Paiva Clínica",data:"10 abr 2025",val:-8000},
 ];
 const adminUsers=[
-  {nome:"Dra. Tatiana Melo",cat:"Saúde",uniu:8000,perm:3,status:"status-active",sl:"Ativo"},
-  {nome:"ZRP Tecnologia",cat:"Tecnologia",uniu:12000,perm:5,status:"status-active",sl:"Ativo"},
-  {nome:"UP Financeiro",cat:"Financeiro",uniu:9000,perm:2,status:"status-active",sl:"Ativo"},
-  {nome:"Dr. Marcos Lima",cat:"Jurídico",uniu:6000,perm:1,status:"status-pending",sl:"Em análise"},
-  {nome:"Ana Paula Marketing",cat:"Marketing",uniu:7500,perm:4,status:"status-active",sl:"Ativo"},
-  {nome:"Ricardo Mendes",cat:"Educação",uniu:5000,perm:6,status:"status-active",sl:"Ativo"},
+  {nome:"Paiva Clínica Odontológica",cat:"Saúde",uniu:8000,perm:3,status:"status-active",sl:"Ativo"},
+  {nome:"U Properties",cat:"Financeiro",uniu:10000,perm:2,status:"status-active",sl:"Ativo"},
+  {nome:"U Holdings",cat:"Financeiro",uniu:30000,perm:2,status:"status-active",sl:"Ativo"},
+  {nome:"Fio de Afeto",cat:"Marketing",uniu:6000,perm:4,status:"status-active",sl:"Ativo"},
+  {nome:"Náutica Premium",cat:"Outro",uniu:280000,perm:1,status:"status-active",sl:"Ativo"},
+  {nome:"Escritório Jurídico Referência",cat:"Jurídico",uniu:8000,perm:1,status:"status-pending",sl:"Em análise"},
 ];
 const adminTxns=[
-  {match:"Tatiana ↔ ZRP ↔ UP",partes:"3 participantes",val:29000,fee:2900,data:"01 jun 2025"},
-  {match:"Marcos ↔ Ana Paula",partes:"2 participantes",val:13500,fee:1350,data:"30 mai 2025"},
-  {match:"Ricardo ↔ DevTech",partes:"2 participantes",val:13000,fee:1300,data:"28 mai 2025"},
+  {match:"Paiva ↔ U Holdings ↔ U Properties",partes:"3 participantes",val:48000,fee:4800,data:"01 jun 2025"},
+  {match:"Fio de Afeto ↔ Escritório Jurídico",partes:"2 participantes",val:14000,fee:1400,data:"30 mai 2025"},
+  {match:"Náutica Premium ↔ Executive Motors",partes:"2 participantes",val:480000,fee:48000,data:"28 mai 2025"},
 ];
 // ===== RENDER HELPERS =====
 function svcCard(s,i){
@@ -935,9 +936,9 @@ function renderMinhasOfertas(){
 }
 function renderDashTxns(){
   const concluidas=[
-    {desc:"Consultoria Financeira",parceiro:"ZRP Tecnologia",val:12000,fee:1200,data:"28 mai 2025"},
-    {desc:"Consultoria Financeira",parceiro:"Dr. Marcos Lima",val:6000,fee:600,data:"15 mai 2025"},
-    {desc:"Mentoria Executiva",parceiro:"Ricardo Mendes",val:5000,fee:500,data:"02 mai 2025"},
+    {desc:"Harmonização Facial",parceiro:"U Properties",val:10000,fee:1000,data:"28 mai 2025"},
+    {desc:"Assessoria Financeira",parceiro:"U Holdings",val:30000,fee:3000,data:"15 mai 2025"},
+    {desc:"Kit Corporativo",parceiro:"Fio de Afeto",val:6000,fee:600,data:"02 mai 2025"},
   ];
   document.getElementById('dash-txn-table').innerHTML=concluidas.map(t=>`<tr>
     <td class="td-bold">${t.desc}</td>
