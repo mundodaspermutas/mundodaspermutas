@@ -309,7 +309,7 @@ tbody tr:hover td{background:var(--gray-50)}
         <span>Contrato</span>
       </button>
       <button onclick="nav('admin')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 0 000 14.14"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
         <span>Admin</span>
       </button>
     </div>
@@ -1357,41 +1357,22 @@ document.getElementById('modal-cadastro').addEventListener('click',function(e){
   if(e.target===this) fecharModalCadastro();
 });
 function enviarCadastro(){
-  const nome=document.getElementById('mc-nome').value.trim();
-  const doc=document.getElementById('mc-doc').value.trim();
-  const tel=document.getElementById('mc-tel').value.trim();
-  const email=document.getElementById('mc-email').value.trim();
-  const desc=document.getElementById('mc-desc').value.trim();
-  if(!nome){toast('Informe seu nome ou razão social.','err');return}
-  if(!doc){toast('Informe o CPF ou CNPJ.','err');return}
-  if(!email||!email.includes('@')){toast('Informe um e-mail válido.','err');return}
-  if(!tel){toast('Informe o telefone.','err');return}
-  if(!desc){toast('Descreva o produto ou serviço.','err');return}
-  const assunto=encodeURIComponent('Novo Cadastro — Mundo das Permutas: '+nome);
-  const corpo=encodeURIComponent(
-    'NOVO CADASTRO — MUNDO DAS PERMUTAS
-
-'+
-    'Nome / Razão Social: '+nome+'
-'+
-    'CPF / CNPJ: '+doc+'
-'+
-    'E-mail: '+email+'
-'+
-    'Telefone / WhatsApp: '+tel+'
-
-'+
-    'DESCRIÇÃO DO PRODUTO OU SERVIÇO:
-'+desc+'
-
-'+
-    '---
-Enviado via site mundodaspermutas.com.br'
-  );
+  var nome=document.getElementById('mc-nome').value.trim();
+  var doc=document.getElementById('mc-doc').value.trim();
+  var tel=document.getElementById('mc-tel').value.trim();
+  var email=document.getElementById('mc-email').value.trim();
+  var desc=document.getElementById('mc-desc').value.trim();
+  if(!nome){toast('Informe seu nome ou razao social.','err');return;}
+  if(!doc){toast('Informe o CPF ou CNPJ.','err');return;}
+  if(!email||!email.includes('@')){toast('Informe um e-mail valido.','err');return;}
+  if(!tel){toast('Informe o telefone.','err');return;}
+  if(!desc){toast('Descreva o produto ou servico.','err');return;}
+  var corpo='NOVO CADASTRO - MUNDO DAS PERMUTAS%0D%0A%0D%0ANome: '+encodeURIComponent(nome)+'%0D%0ACPF/CNPJ: '+encodeURIComponent(doc)+'%0D%0AEmail: '+encodeURIComponent(email)+'%0D%0ATelefone: '+encodeURIComponent(tel)+'%0D%0A%0D%0ADESCRICAO:%0D%0A'+encodeURIComponent(desc)+'%0D%0A%0D%0AEnviado via mundodaspermutas.com.br';
+  var assunto='Novo Cadastro - Mundo das Permutas: '+encodeURIComponent(nome);
   window.location.href='mailto:contato@mundodaspermutas.com.br?subject='+assunto+'&body='+corpo;
   fecharModalCadastro();
-  toast('Abrindo seu e-mail... Envie a mensagem para concluir o cadastro!');
-  ['mc-nome','mc-doc','mc-tel','mc-email','mc-desc'].forEach(id=>document.getElementById(id).value='');
+  toast('Abrindo seu e-mail! Envie a mensagem para concluir o cadastro.');
+  ['mc-nome','mc-doc','mc-tel','mc-email','mc-desc'].forEach(function(id){document.getElementById(id).value='';});
 }
 // ===== INIT =====
 renderFeatured();
