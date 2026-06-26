@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundo das Permutas — Permuta Inteligente de Serviços e Produtos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0D6E5E;--teal-mid:#0F8370;--teal-light:#E4F5F2;--teal-soft:#B2DDD7;--teal-dark:#094E43;
+  --gold:#C9973A;--gold-light:#FBF3E2;--gold-soft:#EDD59A;
+  --coral:#D95F4B;--coral-light:#FBE9E6;
+  --indigo:#3D4FA0;--indigo-light:#ECEFFE;
+  --sage:#5D8A6B;--sage-light:#EAF3EC;
+  --gray-50:#F7F8F7;--gray-100:#EFF0EF;--gray-200:#DCDEDD;--gray-400:#9AA09B;
+  --gray-600:#4F5752;--gray-800:#202724;--gray-900:#131815;--white:#FFFFFF;
+  --radius-sm:5px;--radius-md:10px;--radius-lg:16px;--radius-xl:24px;
+  --shadow-sm:0 1px 4px rgba(0,0,0,0.07);--shadow-md:0 4px 18px rgba(0,0,0,0.10);--shadow-lg:0 10px 36px rgba(0,0,0,0.13);
+  --font-head:'Fraunces',serif;--font-body:'Outfit',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-900);font-size:15px;line-height:1.6}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--gray-100)}
+::-webkit-scrollbar-thumb{background:var(--teal-soft);border-radius:10px}
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--gray-200);
+  height:62px;display:flex;align-items:center;
+  padding:0 1.5rem;justify-content:space-between;
+}
+.logo{
+  font-family:var(--font-head);font-size:19px;font-weight:500;
+  color:var(--teal-dark);letter-spacing:-0.3px;cursor:pointer;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.logo-icon{width:32px;height:32px;border-radius:8px;background:var(--teal);display:flex;align-items:center;justify-content:center;}
+.logo-icon svg{width:17px;height:17px;color:#fff}
+.topnav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.topnav::-webkit-scrollbar{display:none}
+.topnav button{
+  background:none;border:none;padding:7px 11px;border-radius:var(--radius-sm);font-size:13px;
+  color:var(--gray-600);cursor:pointer;font-family:var(--font-body);font-weight:400;
+  display:flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap
+}
+.topnav button svg{width:14px;height:14px;flex-shrink:0}
+.topnav button:hover{background:var(--gray-100);color:var(--gray-900)}
+.topnav button.active{background:var(--teal-light);color:var(--teal);font-weight:500}
+.topright{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.uniu-balance{background:var(--teal-light);color:var(--teal);font-size:13px;font-weight:500;padding:5px 13px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.avatar-btn{width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-head)}
+/* LAYOUT */
+.page{display:none;animation:fadeIn 0.2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.container{max-width:1060px;margin:0 auto;padding:2.5rem 2rem}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:var(--radius-md);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);border:none;transition:all 0.15s;text-decoration:none}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn-teal{background:var(--teal);color:#fff}
+.btn-teal:hover{background:var(--teal-mid);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:#b8872e;transform:translateY(-1px)}
+.btn-ghost{background:none;border:1.5px solid var(--gray-200);color:var(--gray-800)}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-light)}
+.btn-sm{padding:6px 15px;font-size:13px}
+.btn-danger{background:var(--coral-light);color:var(--coral);border:1px solid #f5c4bc}
+.btn-danger:hover{background:#f5c4bc}
+/* TAGS */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.tag-teal{background:var(--teal-light);color:var(--teal)}
+.tag-gold{background:var(--gold-light);color:#8A6420}
+.tag-coral{background:var(--coral-light);color:var(--coral)}
+.tag-indigo{background:var(--indigo-light);color:var(--indigo)}
+.tag-sage{background:var(--sage-light);color:var(--sage)}
+.tag-gray{background:var(--gray-100);color:var(--gray-600)}
+.status-active{background:#DCFCE7;color:#15803D}
+.status-pending{background:#FEF9C3;color:#854D0E}
+.status-done{background:var(--teal-light);color:var(--teal)}
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow-sm)}
+.card-hover{transition:all 0.2s}
+.card-hover:hover{box-shadow:var(--shadow-md);border-color:var(--teal-soft);transform:translateY(-2px)}
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.section-title{font-family:var(--font-head);font-size:21px;font-weight:500;color:var(--gray-900)}
+.section-sub{font-size:14px;color:var(--gray-400);margin-top:2px}
+/* METRICS */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2.5rem}
+.metric-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.25rem;box-shadow:var(--shadow-sm)}
+.metric-card .m-icon{width:38px;height:38px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.metric-card .m-val{font-family:var(--font-head);font-size:27px;font-weight:500;color:var(--gray-900);line-height:1}
+.metric-card .m-label{font-size:13px;color:var(--gray-400);margin-top:4px}
+.metric-card .m-trend{font-size:12px;color:var(--teal);margin-top:4px;font-weight:500}
+/* GRIDS */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:1.25rem}
+/* FORMS */
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-size:13.5px;font-weight:500;color:var(--gray-800);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 13px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-size:14px;background:var(--white);color:var(--gray-900);font-family:var(--font-body);transition:border-color 0.15s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,110,94,0.08)}
+.form-group textarea{resize:vertical;min-height:90px;line-height:1.6}
+.form-note{font-size:12px;color:var(--gray-400);margin-top:5px}
+.form-note strong{color:var(--teal)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal) 55%,#198A77 100%);border-radius:var(--radius-xl);padding:4.5rem 3.5rem;margin-bottom:3rem;position:relative;overflow:hidden;color:#fff}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hero::after{content:'';position:absolute;bottom:-60px;right:100px;width:180px;height:180px;border-radius:50%;background:rgba(201,151,58,0.15)}
+.hero-content{position:relative;z-index:1;max-width:640px}
+.hero h1{font-family:var(--font-head);font-size:44px;font-weight:500;line-height:1.12;margin-bottom:1rem;letter-spacing:-0.5px}
+.hero h1 em{font-style:italic;color:var(--gold-soft)}
+.hero p{font-size:16px;opacity:0.88;margin-bottom:2rem;line-height:1.75;max-width:500px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.22);border-radius:20px;padding:4px 14px;font-size:13px;margin-bottom:1.5rem}
+.hero-badge span{width:7px;height:7px;border-radius:50%;background:#4ADE80;display:inline-block;box-shadow:0 0 7px #4ADE80}
+/* HOW STEPS */
+.how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:3rem}
+.how-step{background:var(--white);padding:1.75rem 1.5rem}
+.how-step-num{font-family:var(--font-body);font-size:11px;font-weight:600;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem}
+.how-step h3{font-family:var(--font-head);font-size:15px;font-weight:500;margin-bottom:6px}
+.how-step p{font-size:13px;color:var(--gray-600);line-height:1.6}
+.how-step-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--teal-light);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.how-step-icon svg{width:18px;height:18px;color:var(--teal)}
+/* SERVICE CARDS */
+.svc-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.25rem;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column}
+.svc-card:hover{box-shadow:var(--shadow-md);border-color:var(--teal-soft);transform:translateY(-2px)}
+.svc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.svc-name{font-family:var(--font-head);font-size:15px;font-weight:500;color:var(--gray-900)}
+.svc-desc{font-size:13px;color:var(--gray-600);line-height:1.6;flex:1;margin-bottom:12px}
+.svc-price{font-family:var(--font-head);font-size:22px;font-weight:500;color:var(--teal);display:flex;align-items:baseline;gap:4px}
+.svc-price-brl{font-size:12px;color:var(--gray-400);font-family:var(--font-body);font-weight:400}
+.svc-footer{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-100)}
+.prov-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;font-family:var(--font-head)}
+.prov-name-sm{font-size:13px;color:var(--gray-600);flex:1}
+.verified-badge{display:flex;align-items:center;gap:3px;font-size:11.5px;color:var(--teal);font-weight:500}
+.verified-badge svg{width:13px;height:13px}
+/* FILTERS */
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-bar input,.filter-bar select{padding:8px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-size:14px;background:var(--white);color:var(--gray-900);font-family:var(--font-body)}
+.filter-bar input{min-width:220px}
+.filter-bar input:focus,.filter-bar select:focus{outline:none;border-color:var(--teal)}
+/* MATCH CARDS */
+.match-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+.match-card.novo{border-left:3px solid var(--teal)}
+.match-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.match-title{font-family:var(--font-head);font-size:15px;font-weight:500}
+.match-flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin-bottom:1.25rem}
+.match-party{flex:1;min-width:150px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 14px}
+.mp-name{font-weight:600;font-size:14px;color:var(--gray-900)}
+.mp-svc{font-size:12px;color:var(--gray-600);margin-top:2px;line-height:1.4}
+.mp-val{font-family:var(--font-head);font-size:14px;font-weight:500;color:var(--teal);margin-top:6px}
+.match-arrow{display:flex;align-items:center;color:var(--teal);flex-shrink:0;align-self:center}
+.match-arrow svg{width:18px;height:18px}
+.match-footer{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--gray-100);flex-wrap:wrap;gap:10px}
+.match-fee-info{font-size:13px;color:var(--gray-600)}
+.match-fee-info strong{color:var(--gray-900)}
+.match-actions{display:flex;gap:8px}
+/* WALLET */
+.profile-hero{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-xl);padding:2rem;display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;box-shadow:var(--shadow-sm)}
+.profile-av-lg{width:70px;height:70px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:22px;font-weight:500;flex-shrink:0}
+.profile-info h2{font-family:var(--font-head);font-size:20px;font-weight:500}
+.profile-info p{font-size:14px;color:var(--gray-600);margin-top:4px}
+.profile-info .tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.wallet-hero{background:var(--teal-dark);color:#fff;border-radius:var(--radius-xl);padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.wallet-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.wh-label{font-size:13px;opacity:0.7;position:relative}
+.wh-amount{font-family:var(--font-head);font-size:44px;font-weight:500;margin:6px 0;position:relative;line-height:1}
+.wh-sub{font-size:13px;opacity:0.6;position:relative}
+.wh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.15);border-radius:var(--radius-md);margin-top:1.5rem;overflow:hidden;position:relative}
+.wh-stat{background:rgba(255,255,255,0.07);padding:12px;text-align:center}
+.wh-stat .v{font-family:var(--font-head);font-size:18px;font-weight:500}
+.wh-stat .l{font-size:11px;opacity:0.65;margin-top:2px}
+.txn-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100)}
+.txn-item:last-child{border-bottom:none}
+.txn-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.txn-icon svg{width:16px;height:16px}
+.txn-in{background:#DCFCE7;color:#15803D}
+.txn-out{background:var(--coral-light);color:var(--coral)}
+.txn-fee{background:var(--gold-light);color:#8A6420}
+.txn-info-col{flex:1}
+.txn-name{font-size:14px;font-weight:500}
+.txn-date{font-size:12px;color:var(--gray-400);margin-top:2px}
+.txn-amount{font-family:var(--font-head);font-size:15px;font-weight:500}
+.txn-amount.in{color:#15803D}
+.txn-amount.out{color:var(--coral)}
+/* ADMIN */
+.admin-top{background:var(--teal-dark);color:#fff;border-radius:var(--radius-xl);padding:1.75rem 2rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between}
+.admin-top h1{font-family:var(--font-head);font-size:22px;font-weight:500}
+.admin-top p{font-size:14px;opacity:0.7;margin-top:4px}
+.table-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead{background:var(--gray-50)}
+th{padding:11px 1.25rem;text-align:left;font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200)}
+td{padding:12px 1.25rem;border-bottom:1px solid var(--gray-100);color:var(--gray-800);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--gray-50)}
+.td-bold{font-weight:500;color:var(--gray-900)}
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--gray-900);color:#fff;padding:13px 20px;border-radius:var(--radius-md);font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;max-width:380px;box-shadow:var(--shadow-lg)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast svg{width:18px;height:18px;flex-shrink:0;color:var(--teal)}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--gray-400)}
+.empty-state svg{width:48px;height:48px;margin:0 auto 1rem;display:block;color:var(--gray-300)}
+/* MODAL */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;align-items:center;justify-content:center;padding:1.5rem}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--white);border-radius:var(--radius-xl);padding:2rem;width:100%;max-width:520px;box-shadow:var(--shadow-lg)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.modal-title{font-family:var(--font-head);font-size:18px;font-weight:500}
+.modal-close{background:none;border:none;cursor:pointer;padding:4px;color:var(--gray-400)}
+.modal-close:hover{color:var(--gray-900)}
+.modal-close svg{width:20px;height:20px}
+/* DASHBOARD SIDEBAR NAV */
+.dash-layout{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;align-items:start}
+.dash-sidebar{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1rem;box-shadow:var(--shadow-sm);position:sticky;top:80px}
+.dash-sidebar-title{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;padding:6px 10px;margin-bottom:4px}
+.dash-nav-btn{width:100%;text-align:left;background:none;border:none;padding:9px 12px;border-radius:var(--radius-sm);font-size:14px;color:var(--gray-700);cursor:pointer;display:flex;align-items:center;gap:9px;transition:all 0.15s;font-family:var(--font-body);font-weight:400}
+.dash-nav-btn svg{width:15px;height:15px;flex-shrink:0;color:var(--gray-400)}
+.dash-nav-btn:hover{background:var(--gray-50);color:var(--gray-900)}
+.dash-nav-btn:hover svg{color:var(--teal)}
+.dash-nav-btn.active{background:var(--teal-light);color:var(--teal);font-weight:500}
+.dash-nav-btn.active svg{color:var(--teal)}
+.dash-nav-divider{height:1px;background:var(--gray-100);margin:8px 0}
+.dash-content{min-width:0}
+.dash-panel{display:none}
+.dash-panel.active{display:block;animation:fadeIn 0.2s ease}
+/* QUICK STATS ROW */
+.qs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.5rem}
+.qs-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:1rem;box-shadow:var(--shadow-sm)}
+.qs-val{font-family:var(--font-head);font-size:22px;font-weight:500;color:var(--gray-900);line-height:1}
+.qs-label{font-size:12px;color:var(--gray-400);margin-top:3px}
+.qs-trend{font-size:11px;color:var(--teal);font-weight:500;margin-top:3px}
+/* CAT COLORS */
+.cat-saude{background:var(--coral-light);color:var(--coral)}
+.cat-tech{background:var(--indigo-light);color:var(--indigo)}
+.cat-financeiro{background:var(--teal-light);color:var(--teal)}
+.cat-juridico{background:var(--gold-light);color:#8A6420}
+.cat-marketing{background:var(--sage-light);color:var(--sage)}
+.cat-educacao{background:var(--indigo-light);color:var(--indigo)}
+/* DISCLAIMER BOX */
+.disclaimer-box{background:#FFF7ED;border:1px solid #FED7AA;border-radius:var(--radius-md);padding:1rem 1.25rem;display:flex;gap:10px;align-items:flex-start;margin-bottom:1.25rem}
+.disclaimer-box svg{flex-shrink:0;color:#C2410C;width:18px;height:18px;margin-top:1px}
+.disclaimer-box p{font-size:13px;color:#7C2D12;line-height:1.7}
+/* PIX INFO */
+.pix-box{background:var(--teal-light);border:1px solid var(--teal-soft);border-radius:var(--radius-md);padding:1rem 1.25rem;display:flex;gap:10px;align-items:flex-start}
+.pix-box svg{flex-shrink:0;color:var(--teal);width:18px;height:18px;margin-top:1px}
+.pix-box p{font-size:13px;color:var(--teal-dark);line-height:1.7}
+@media(max-width:900px){
+  .dash-layout{grid-template-columns:1fr}
+  .dash-sidebar{position:static}
+}
+@media(max-width:768px){
+  .topnav button span{display:none}
+  .hero h1{font-size:30px}
+  .hero{padding:2.5rem 1.75rem}
+  .container{padding:1.5rem 1rem}
+  .profile-hero{flex-direction:column;text-align:center}
+  .profile-info .tags{justify-content:center}
+  .admin-top{flex-direction:column;gap:1rem}
+}
+</style>
+</head>
+<body>
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div style="display:flex;align-items:center;gap:1.25rem;min-width:0">
+    <div class="logo" onclick="nav('home')">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+      </div>
+      <span style="display:none;display:block">Mundo das Permutas</span>
+    </div>
+    <div class="topnav">
+      <button class="active" onclick="nav('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Início</span>
+      </button>
+      <button onclick="nav('catalogo')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Catálogo</span>
+      </button>
+      <button onclick="nav('matches')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+        <span>Matches</span>
+      </button>
+      <button onclick="nav('cadastro')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span>Oferecer</span>
+      </button>
+      <button onclick="nav('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button onclick="nav('faq')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Como funciona</span>
+      </button>
+      <button onclick="nav('contrato')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Contrato</span>
+      </button>
+      <button onclick="nav('admin')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 0 000 14.14"/></svg>
+        <span>Admin</span>
+      </button>
+    </div>
+  </div>
+  <div class="topright">
+    <div class="uniu-balance">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      4.200 UniU
+    </div>
+    <div class="avatar-btn">JC</div>
+  </div>
+</nav>
+<!-- ==================== HOME ==================== -->
+<div id="page-home" class="page active">
+  <div class="container">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-badge"><span></span> Plataforma 100% brasileira</div>
+        <h1>Troque serviços<br>e produtos.<br><em>Cresça sem gastar.</em></h1>
+        <p>O Mundo das Permutas conecta profissionais e empresas para permutar serviços e produtos com equivalência de valor — sem desembolso financeiro imediato. R$ 1 = 1 UniU.</p>
+        <div class="hero-btns">
+          <button class="btn btn-gold" onclick="nav('cadastro')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Cadastrar meu serviço
+          </button>
+          <button class="btn" style="background:rgba(255,255,255,0.14);color:#fff;border:1px solid rgba(255,255,255,0.25)" onclick="nav('catalogo')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Ver catálogo
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Early bird banner -->
+    <div style="background:linear-gradient(135deg,#7C2D12,#C2410C);border-radius:var(--radius-lg);padding:1.25rem 2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;color:#fff">
+      <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:var(--font-head);font-size:15px;font-weight:500;margin-bottom:3px">🎉 Oferta de lançamento — primeiros 100 associados</div>
+        <div style="font-size:13.5px;opacity:0.9;line-height:1.6"><strong>Sem anuidade</strong> para os 100 primeiros cadastrados. Taxa somente de 10% sobre permutas concluídas, paga via Pix para a plataforma.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:var(--radius-md);padding:8px 16px;text-align:center;flex-shrink:0">
+        <div style="font-family:var(--font-head);font-size:20px;font-weight:500" id="vagas-restantes">87</div>
+        <div style="font-size:11px;opacity:0.8">vagas restantes</div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,var(--teal-dark),#0F8370);border-radius:var(--radius-lg);padding:1.5rem 2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;color:#fff">
+      <div style="width:44px;height:44px;background:rgba(255,255,255,0.12);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:500;margin-bottom:3px">Matchmaking por Inteligência Artificial</div>
+        <div style="font-size:13.5px;opacity:0.82;line-height:1.6">Nossa IA busca correspondências <strong>dentro e fora da plataforma</strong> — quanto mais detalhada sua descrição e o que você deseja receber, mais eficiente o match.</div>
+      </div>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.25)" onclick="nav('faq')">Saiba mais</button>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="m-icon" style="background:var(--teal-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div class="m-val">342</div><div class="m-label">Profissionais ativos</div><div class="m-trend">+18 este mês</div>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon" style="background:var(--gold-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="m-val">R$ 2,4M</div><div class="m-label">Volume permutado</div><div class="m-trend">+R$ 240K este mês</div>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon" style="background:var(--indigo-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg></div>
+        <div class="m-val">89</div><div class="m-label">Matches realizados</div><div class="m-trend">+5 esta semana</div>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon" style="background:var(--coral-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="m-val">4,8 ★</div><div class="m-label">Avaliação média</div><div class="m-trend">Excelente</div>
+      </div>
+    </div>
+    <div class="section-header"><div><div class="section-title">Como funciona</div><div class="section-sub">Simples, seguro e sem burocracia</div></div></div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.66V20a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg></div>
+        <div class="how-step-num">Passo 01</div>
+        <h3>Cadastre seu serviço ou produto</h3>
+        <p>Descreva detalhadamente o que oferece, o valor (mínimo R$ 5.000) e o que gostaria de receber em troca.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="how-step-num">Passo 02</div>
+        <h3>Curadoria Mundo das Permutas</h3>
+        <p>Nossa equipe avalia e aprova cada cadastro. Aprovação em até 5 dias úteis. Sem custo algum.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></div>
+        <div class="how-step-num">Passo 03</div>
+        <h3>Matchmaking por IA</h3>
+        <p>Nossa IA busca o match ideal dentro e fora da plataforma — em permutas bilaterais ou trilaterais.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="how-step-num">Passo 04</div>
+        <h3>Contrato e pagamento</h3>
+        <p>Permuta formalizada com contrato. Taxa de 10% via Pix somente após a conclusão da permuta.</p>
+      </div>
+    </div>
+    <div class="section-header">
+      <div><div class="section-title">Serviços em destaque</div><div class="section-sub">Curados pela equipe Mundo das Permutas</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="nav('catalogo')">Ver todos →</button>
+    </div>
+    <div class="grid-3" id="featured-grid"></div>
+  </div>
+</div>
+<!-- ==================== CATÁLOGO ==================== -->
+<div id="page-catalogo" class="page">
+  <div class="container">
+    <div class="section-header">
+      <div><div class="section-title">Catálogo de Serviços e Produtos</div><div class="section-sub">Encontre o parceiro ideal para sua permuta</div></div>
+      <button class="btn btn-teal btn-sm" onclick="nav('cadastro')">+ Oferecer serviço</button>
+    </div>
+    <div class="filter-bar">
+      <input type="text" id="search-cat" placeholder="Buscar serviço, produto ou profissional..." oninput="renderCatalog()">
+      <select id="filtro-cat" onchange="renderCatalog()">
+        <option value="">Todas as categorias</option>
+        <option>Saúde</option><option>Tecnologia</option><option>Financeiro</option>
+        <option>Jurídico</option><option>Marketing</option><option>Educação</option>
+      </select>
+      <select id="filtro-formato" onchange="renderCatalog()">
+        <option value="">Qualquer formato</option>
+        <option>Presencial</option><option>Remoto</option><option>Híbrido</option>
+      </select>
+    </div>
+    <div class="grid-3" id="catalog-grid"></div>
+  </div>
+</div>
+<!-- ==================== MATCHES ==================== -->
+<div id="page-matches" class="page">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-title" style="display:flex;align-items:center;gap:10px">Matches de Permuta <span class="tag tag-teal">3 novos</span></div>
+        <div class="section-sub">Oportunidades identificadas pelo matchmaking por IA</div>
+      </div>
+    </div>
+    <div id="match-list"></div>
+  </div>
+</div>
+<!-- ==================== CADASTRO ==================== -->
+<div id="page-cadastro" class="page">
+  <div class="container" style="max-width:720px">
+    <div class="section-header">
+      <div><div class="section-title">Cadastrar Serviço ou Produto</div><div class="section-sub">Avaliado em até 5 dias úteis pela curadoria Mundo das Permutas • Gratuito</div></div>
+    </div>
+    <div style="background:var(--teal-light);border:1px solid var(--teal-soft);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:14px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:var(--teal);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:14px;color:var(--teal-dark);margin-bottom:4px">Dica para o matchmaking por IA</div>
+        <div style="font-size:13px;color:var(--teal-dark);opacity:0.85;line-height:1.7">Nossa IA busca correspondências <strong>dentro e fora da plataforma</strong>. Quanto mais detalhada for sua descrição e os serviços que você deseja receber em troca, mais eficiente será o processo de match.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group"><label>Nome do serviço / produto *</label><input type="text" id="f-nome" placeholder="Ex: Harmonização facial completa"></div>
+        <div class="form-group"><label>Categoria *</label>
+          <select id="f-cat"><option value="">Selecione...</option><option>Saúde</option><option>Tecnologia</option><option>Financeiro</option><option>Jurídico</option><option>Marketing</option><option>Educação</option><option>Outro</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label>Descrição detalhada *</label><textarea id="f-desc" placeholder="Descreva o serviço ou produto: escopo, incluso, diferenciais, prazo, condições de entrega..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Valor em Reais (R$) *</label><input type="number" id="f-valor" placeholder="5000" min="5000" oninput="updateUniu()"><div class="form-note">Equivale a <strong id="uniu-preview">0 UniU</strong> • Mínimo: R$ 5.000</div></div>
+        <div class="form-group"><label>Formato de entrega</label><select id="f-formato"><option>Presencial</option><option>Remoto</option><option>Híbrido</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Cidade / Estado</label><input type="text" id="f-cidade" placeholder="São Paulo, SP"></div>
+        <div class="form-group"><label>Prazo de entrega</label><input type="text" id="f-prazo" placeholder="Ex: 15 dias úteis"></div>
+      </div>
+      <div class="form-group"><label>O que você gostaria de receber em troca</label><textarea id="f-troca" placeholder="Descreva o que você precisa: consultoria jurídica, desenvolvimento de site, gestão de redes... Nossa IA usa essa informação para ampliar a busca fora da plataforma."></textarea></div>
+      <div style="background:var(--teal-light);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:13px;color:var(--teal-dark);border:1px solid var(--teal-soft)">
+        <strong>Taxa Mundo das Permutas:</strong> 10% sobre o valor em UniU de cada permuta concluída, pago via Pix para a conta da plataforma. <strong>Você não paga nada para cadastrar</strong> — a taxa só incide se e quando uma permuta for realizada.
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-teal" onclick="submitService()">Enviar para curadoria</button>
+        <button class="btn btn-ghost" onclick="clearForm()">Limpar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ==================== DASHBOARD DO ASSOCIADO ==================== -->
+<div id="page-dashboard" class="page">
+  <div class="container">
+    <div style="margin-bottom:1.5rem">
+      <div style="font-family:var(--font-head);font-size:24px;font-weight:500;color:var(--gray-900)">Olá, João Carlos 👋</div>
+      <div style="font-size:14px;color:var(--gray-400);margin-top:3px">Bem-vindo ao seu painel de associado • <span style="color:var(--teal);font-weight:500">Perfil verificado</span></div>
+    </div>
+    <div class="dash-layout">
+      <!-- Sidebar nav -->
+      <div class="dash-sidebar">
+        <div class="dash-sidebar-title">Menu</div>
+        <button class="dash-nav-btn active" onclick="showPanel('painel-dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button class="dash-nav-btn" onclick="showPanel('painel-ofertas');nav2('catalogo')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8l4 0 3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          Ver Ofertas
+        </button>
+        <button class="dash-nav-btn" onclick="showPanel('painel-associados')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Associados
+        </button>
+        <button class="dash-nav-btn" onclick="showPanel('painel-minhas-ofertas')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.66V20a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg>
+          Minhas Ofertas
+        </button>
+        <div class="dash-nav-divider"></div>
+        <button class="dash-nav-btn" onclick="showPanel('painel-transacoes')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          Transações Concluídas
+        </button>
+        <button class="dash-nav-btn" onclick="showPanel('painel-extrato')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Extrato da Conta
+        </button>
+      </div>
+      <!-- Main content -->
+      <div class="dash-content">
+        <!-- PAINEL DASHBOARD -->
+        <div id="painel-dashboard" class="dash-panel active">
+          <div class="qs-grid">
+            <div class="qs-card">
+              <div class="qs-val">4.200</div>
+              <div class="qs-label">Saldo UniU</div>
+              <div class="qs-trend">≈ R$ 4.200,00</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-val">12</div>
+              <div class="qs-label">Permutas realizadas</div>
+              <div class="qs-trend">+2 este mês</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-val">R$ 180K</div>
+              <div class="qs-label">Volume total</div>
+              <div class="qs-trend">Acumulado</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-val">4,9 ★</div>
+              <div class="qs-label">Avaliação</div>
+              <div class="qs-trend">Excelente</div>
+            </div>
+          </div>
+          <!-- Match ativo -->
+          <div class="card" style="margin-bottom:1rem;border-left:3px solid var(--teal)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:500">Match pendente</div>
+              <span class="tag tag-teal">Aguardando aceite</span>
+            </div>
+            <div style="font-size:13px;color:var(--gray-600);line-height:1.7;margin-bottom:12px">Permuta trilateral com ZRP Tecnologia e UP Financeiro. Você oferece consultoria financeira, recebe desenvolvimento de site.</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-teal btn-sm" onclick="toast('Permuta aceita! Partes notificadas.')">Aceitar match</button>
+              <button class="btn btn-ghost btn-sm" onclick="nav('matches')">Ver detalhes</button>
+            </div>
+          </div>
+          <!-- Atividade recente -->
+          <div class="card">
+            <div style="font-family:var(--font-head);font-size:16px;font-weight:500;margin-bottom:1rem">Atividade recente</div>
+            <div id="dash-recent-txns"></div>
+          </div>
+        </div>
+        <!-- PAINEL VER OFERTAS (redireciona para catálogo) -->
+        <div id="painel-ofertas" class="dash-panel">
+          <div class="card" style="text-align:center;padding:3rem 2rem">
+            <div style="width:56px;height:56px;background:var(--teal-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div style="font-family:var(--font-head);font-size:18px;font-weight:500;margin-bottom:8px">Catálogo de Ofertas</div>
+            <p style="font-size:14px;color:var(--gray-600);margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto">Explore todos os serviços e produtos disponíveis para permuta na plataforma.</p>
+            <button class="btn btn-teal" onclick="nav('catalogo')">Abrir catálogo completo →</button>
+          </div>
+        </div>
+        <!-- PAINEL ASSOCIADOS -->
+        <div id="painel-associados" class="dash-panel">
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:500;margin-bottom:1rem">Associados da plataforma</div>
+          <div class="table-card">
+            <table>
+              <thead><tr><th>Nome</th><th>Área</th><th>Permutas</th><th>Status</th></tr></thead>
+              <tbody id="dash-assoc-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- PAINEL MINHAS OFERTAS -->
+        <div id="painel-minhas-ofertas" class="dash-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <div style="font-family:var(--font-head);font-size:18px;font-weight:500">Minhas ofertas cadastradas</div>
+            <button class="btn btn-teal btn-sm" onclick="nav('cadastro')">+ Nova oferta</button>
+          </div>
+          <div id="minhas-ofertas-list"></div>
+        </div>
+        <!-- PAINEL TRANSAÇÕES CONCLUÍDAS -->
+        <div id="painel-transacoes" class="dash-panel">
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:500;margin-bottom:1rem">Transações concluídas</div>
+          <div class="table-card">
+            <table>
+              <thead><tr><th>Descrição</th><th>Parceiro</th><th>Valor (UniU)</th><th>Fee 10%</th><th>Data</th><th>Status</th></tr></thead>
+              <tbody id="dash-txn-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- PAINEL EXTRATO -->
+        <div id="painel-extrato" class="dash-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <div style="font-family:var(--font-head);font-size:18px;font-weight:500">Extrato da conta</div>
+            <button class="btn btn-ghost btn-sm" onclick="toast('Extrato exportado em PDF.')">Exportar PDF</button>
+          </div>
+          <!-- saldo card -->
+          <div style="background:var(--teal-dark);color:#fff;border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
+            <div style="font-size:13px;opacity:0.7">Saldo atual</div>
+            <div style="font-family:var(--font-head);font-size:36px;font-weight:500;line-height:1;margin:6px 0">4.200 UniU</div>
+            <div style="font-size:13px;opacity:0.6">Equivalente a R$ 4.200,00 em serviços e produtos na rede</div>
+          </div>
+          <div class="pix-box" style="margin-bottom:1rem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <p><strong>Pagamento via Pix:</strong> A taxa de 10% sobre cada permuta concluída é paga via Pix diretamente para a conta da plataforma Mundo das Permutas. Você recebe as instruções por e-mail após a conclusão de cada permuta.</p>
+          </div>
+          <div class="card" id="extrato-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ==================== FAQ ==================== -->
+<div id="page-faq" class="page">
+  <div class="container" style="max-width:840px">
+    <div style="background:linear-gradient(135deg,var(--teal-dark),var(--teal));border-radius:var(--radius-xl);padding:3.5rem 3rem;color:#fff;margin-bottom:2.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
+      <div style="position:relative">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.22);border-radius:20px;padding:4px 14px;font-size:13px;margin-bottom:1.25rem"><span style="width:7px;height:7px;border-radius:50%;background:#4ADE80;display:inline-block"></span> Como funciona o Mundo das Permutas</div>
+        <h1 style="font-family:var(--font-head);font-size:34px;font-weight:500;line-height:1.2;margin-bottom:1rem">Tudo que você precisa<br>saber antes de começar</h1>
+        <p style="font-size:15px;opacity:0.85;max-width:540px;line-height:1.7;margin-bottom:1.5rem">Troque serviços e produtos sem desembolso financeiro imediato. Entenda como funciona a moeda UniU, o matchmaking por IA e o processo de permuta.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-md);padding:10px 18px;text-align:center">
+            <div style="font-family:var(--font-head);font-size:22px;font-weight:500">28</div>
+            <div style="font-size:12px;opacity:0.75;margin-top:2px">perguntas respondidas</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-md);padding:10px 18px;text-align:center">
+            <div style="font-family:var(--font-head);font-size:22px;font-weight:500">6</div>
+            <div style="font-size:12px;opacity:0.75;margin-top:2px">categorias de dúvidas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- O que é -->
+    <div class="card" style="margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+        <div style="width:40px;height:40px;background:var(--teal-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div style="font-family:var(--font-head);font-size:17px;font-weight:500">O que é o Mundo das Permutas?</div>
+      </div>
+      <p style="font-size:14px;color:var(--gray-700);line-height:1.8;margin-bottom:10px">O <strong>Mundo das Permutas</strong> é uma plataforma digital brasileira de <strong>permuta de serviços e produtos</strong>. Conectamos profissionais, autônomos e empresas que desejam trocar o que oferecem pelo que precisam — usando como moeda de troca o <strong>UniU</strong> (R$ 1,00 = 1 UniU).</p>
+      <p style="font-size:14px;color:var(--gray-700);line-height:1.8">O grande diferencial é o <strong>matchmaking por inteligência artificial</strong>: nossa IA busca correspondências <em>dentro e fora da plataforma</em>, inclusive em permutas trilaterais — A serve B, B serve C e C serve A — ampliando muito as possibilidades de match.</p>
+    </div>
+    <!-- Isenção de anuidade -->
+    <div style="background:linear-gradient(135deg,#7C2D12,#C2410C);border-radius:var(--radius-lg);padding:1.5rem 2rem;margin-bottom:1.25rem;color:#fff">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div style="font-family:var(--font-head);font-size:17px;font-weight:500">Sem anuidade para os primeiros 100 associados</div>
+      </div>
+      <p style="font-size:14px;opacity:0.9;line-height:1.7">Como reconhecimento dos pioneiros da plataforma, os <strong>primeiros 100 associados cadastrados não pagam anuidade</strong>. Não há mensalidade nem taxa de adesão. A única cobrança é de <strong>10% sobre o valor em UniU de cada permuta concluída</strong>, paga via Pix para a conta da plataforma Mundo das Permutas.</p>
+    </div>
+    <!-- Disclaimer -->
+    <div class="disclaimer-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <p><strong>Aviso importante — sem garantia ou aval:</strong> O Mundo das Permutas atua exclusivamente como plataforma de intermediação. Não somos garantidores nem avalistas de qualquer operação realizada entre os associados. Cada permuta é uma negociação direta entre as partes, e cada participante assume integralmente o risco da operação que aceita realizar. A plataforma não se responsabiliza pela qualidade dos serviços ou produtos trocados, pelo inadimplemento de terceiros ou por eventuais divergências entre as partes.</p>
+    </div>
+    <!-- O que pode ser cadastrado -->
+    <div class="card" style="margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+        <div style="width:40px;height:40px;background:var(--gold-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div style="font-family:var(--font-head);font-size:17px;font-weight:500">O que pode ser cadastrado?</div>
+      </div>
+      <p style="font-size:14px;color:var(--gray-700);line-height:1.8;margin-bottom:14px">Praticamente <strong>qualquer serviço ou produto</strong> pode ser cadastrado — desde que seja legal, tenha valor mínimo de <strong>R$ 5.000</strong> e passe pela curadoria. A única exceção são imóveis.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div style="background:var(--teal-light);border-radius:var(--radius-md);padding:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Exemplos aceitos</div>
+          <div style="font-size:13px;color:var(--gray-700);line-height:1.9">Serviços médicos e de saúde<br>Consultoria jurídica e financeira<br>Desenvolvimento tecnológico<br>Marketing e design<br>Educação e mentoria<br>Serviços contábeis<br>Fotografia e audiovisual<br>Arquitetura e engenharia<br>Produtos físicos (mín. R$ 5.000)<br>Equipamentos e maquinários</div>
+        </div>
+        <div style="background:var(--coral-light);border-radius:var(--radius-md);padding:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--coral);margin-bottom:8px;display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Não aceito</div>
+          <div style="font-size:13px;color:var(--gray-700);line-height:1.9"><strong>Imóveis</strong> de qualquer tipo<br>(não somos corretora e<br>não temos CRECI)<br><br>Serviços ilegais ou que<br>violem a legislação<br>brasileira<br><br>Produtos abaixo de R$ 5.000</div>
+        </div>
+      </div>
+    </div>
+    <!-- Pagamento via Pix -->
+    <div class="card" style="margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+        <div style="width:40px;height:40px;background:var(--teal-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div style="font-family:var(--font-head);font-size:17px;font-weight:500">Como funciona o pagamento da taxa?</div>
+      </div>
+      <p style="font-size:14px;color:var(--gray-700);line-height:1.8;margin-bottom:12px">A taxa de <strong>10%</strong> é cobrada <strong>somente após a conclusão da permuta</strong>. Nada é cobrado antes disso.</p>
+      <div style="background:var(--teal-light);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:10px">
+        <div style="font-size:13px;color:var(--teal-dark);line-height:1.8"><strong>Exemplo:</strong> Se você concluiu uma permuta de R$ 10.000 (10.000 UniU), a taxa é de <strong>R$ 1.000</strong>, paga via <strong>Pix</strong> para a conta da plataforma Mundo das Permutas. Você recebe as instruções de pagamento por e-mail após a confirmação da conclusão da permuta.</div>
+      </div>
+      <div class="disclaimer-box" style="margin-bottom:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <p>O Mundo das Permutas não é garantidor nem avalista da operação. Cada parte assume o risco da permuta que aceita realizar. A taxa é pela intermediação — não por garantia de resultado.</p>
+      </div>
+    </div>
+    <!-- Accordion -->
+    <div style="font-family:var(--font-head);font-size:19px;font-weight:500;margin-bottom:6px;color:var(--gray-900)">Perguntas frequentes</div>
+    <div style="font-size:13.5px;color:var(--gray-600);margin-bottom:1.25rem">Organizado por tema para você encontrar a resposta mais rápido.</div>
+    <div id="faq-accordion"></div>
+    <!-- Contato -->
+    <div style="background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.5rem;margin-top:1.25rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
+      <div style="width:44px;height:44px;background:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow-sm)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:var(--font-head);font-size:14px;font-weight:500;color:var(--gray-900);margin-bottom:2px">Ainda tem dúvidas?</div>
+        <div style="font-size:13px;color:var(--gray-600)">Nossa equipe responde em até 1 dia útil: <strong style="color:var(--teal)">contato@mundodaspermutas.com.br</strong></div>
+      </div>
+      <a href="mailto:contato@mundodaspermutas.com.br" class="btn btn-teal btn-sm">Enviar mensagem</a>
+    </div>
+    <div style="background:var(--teal-dark);border-radius:var(--radius-xl);padding:2.5rem;text-align:center;color:#fff">
+      <div style="font-family:var(--font-head);font-size:22px;font-weight:500;margin-bottom:8px">Pronto para começar?</div>
+      <p style="font-size:14px;opacity:0.8;margin-bottom:1.5rem">Cadastrar é gratuito. Você só paga 10% via Pix se e quando uma permuta acontecer.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="nav('cadastro')">Cadastrar meu serviço gratuitamente</button>
+        <button class="btn" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.22)" onclick="nav('catalogo')">Ver o catálogo</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ==================== CONTRATO ==================== -->
+<div id="page-contrato" class="page">
+  <div class="container" style="max-width:800px">
+    <div class="section-header">
+      <div><div class="section-title">Contrato de Adesão à Plataforma</div><div class="section-sub">Leia com atenção antes de cadastrar seu serviço ou produto</div></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:1.5rem">
+      <div style="background:var(--teal-dark);padding:1.75rem 2rem;color:#fff">
+        <div style="font-family:var(--font-head);font-size:18px;font-weight:500;margin-bottom:4px">CONTRATO DE ADESÃO — MUNDO DAS PERMUTAS</div>
+        <div style="font-size:13px;opacity:0.7">Intermediação de Permuta de Serviços e Produtos — Versão 1.0</div>
+      </div>
+      <div style="padding:2rem;line-height:1.8;color:var(--gray-700);font-size:14px" id="contrato-body"></div>
+    </div>
+    <div class="card" style="background:var(--teal-light);border-color:var(--teal-soft)">
+      <div style="font-family:var(--font-head);font-size:15px;font-weight:500;color:var(--teal-dark);margin-bottom:1rem">Aceite eletrônico</div>
+      <div style="font-size:14px;color:var(--gray-700);margin-bottom:1.25rem">Ao clicar em "Aceitar", você confirma que leu, compreendeu e concorda com todas as cláusulas deste Contrato, nos termos do art. 10 da MP n.º 2.200-2/2001.</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem">
+        <input type="checkbox" id="aceite-check" style="width:18px;height:18px;cursor:pointer">
+        <label for="aceite-check" style="font-size:14px;color:var(--gray-800);cursor:pointer">Li e concordo com todos os termos do Contrato de Adesão Mundo das Permutas</label>
+      </div>
+      <button class="btn btn-teal" onclick="aceitarContrato()">Aceitar e cadastrar meu serviço →</button>
+    </div>
+  </div>
+</div>
+<!-- ==================== ADMIN ==================== -->
+<div id="page-admin" class="page">
+  <div class="container">
+    <div class="admin-top">
+      <div>
+        <h1>Painel Administrativo</h1>
+        <p>Mundo das Permutas — Visão geral da plataforma</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)" onclick="toast('Relatório exportado em CSV.')">Exportar relatório</button>
+      </div>
+    </div>
+    <div class="metrics-grid" id="admin-metrics"></div>
+    <div class="section-header" style="margin-top:1rem"><div class="section-title">Usuários cadastrados</div></div>
+    <div class="table-card" style="margin-bottom:2rem">
+      <table><thead><tr><th>Nome</th><th>Categoria</th><th>UniU (saldo)</th><th>Permutas</th><th>Status</th><th>Ação</th></tr></thead><tbody id="admin-users-table"></tbody></table>
+    </div>
+    <div class="section-header"><div class="section-title">Transações para aprovação</div></div>
+    <div class="table-card">
+      <table><thead><tr><th>Permuta</th><th>Participantes</th><th>Valor total (UniU)</th><th>Fee 10% (Pix)</th><th>Data</th><th>Ação</th></tr></thead><tbody id="admin-txn-table"></tbody></table>
+    </div>
+  </div>
+</div>
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg"></span>
+</div>
+<script>
+// ===== DATA =====
+const catClass={Saúde:"cat-saude",Tecnologia:"cat-tech",Financeiro:"cat-financeiro",Jurídico:"cat-juridico",Marketing:"cat-marketing",Educação:"cat-educacao"};
+const services=[
+  {id:1,nome:"Harmonização Facial Completa",cat:"Saúde",desc:"Procedimento estético facial com ácido hialurônico, preenchimento labial e bioremodelação. Inclui avaliação, aplicação e retorno em 30 dias.",valor:8000,prov:"Dra. Tatiana Melo",provIni:"DT",cidade:"São Paulo, SP",formato:"Presencial",prazo:"1 dia"},
+  {id:2,nome:"Site Profissional com IA Integrada",cat:"Tecnologia",desc:"Desenvolvimento de site moderno com inteligência artificial integrada, painel administrativo, SEO avançado e integração com CRM.",valor:12000,prov:"ZRP Tecnologia",provIni:"ZR",cidade:"Remoto",formato:"Remoto",prazo:"30 dias úteis"},
+  {id:3,nome:"Valuation Empresarial",cat:"Financeiro",desc:"Avaliação completa de empresas para captação de investimento, expansão ou fusões e aquisições. Laudo técnico detalhado.",valor:9000,prov:"UP Financeiro",provIni:"UP",cidade:"São Paulo, SP",formato:"Híbrido",prazo:"15 dias úteis"},
+  {id:4,nome:"Assessoria Jurídica Empresarial",cat:"Jurídico",desc:"Consultoria jurídica para contratos, compliance, proteção patrimonial e estruturação societária.",valor:6000,prov:"Dr. Marcos Lima",provIni:"ML",cidade:"Rio de Janeiro, RJ",formato:"Remoto",prazo:"7 dias úteis"},
+  {id:5,nome:"Gestão de Redes Sociais — 6 meses",cat:"Marketing",desc:"Produção de conteúdo estratégico e gestão completa das redes por 6 meses: Instagram, LinkedIn e YouTube. Relatórios mensais.",valor:7500,prov:"Ana Paula Marketing",provIni:"AP",cidade:"Remoto",formato:"Remoto",prazo:"6 meses"},
+  {id:6,nome:"Programa de Mentoria Executiva",cat:"Educação",desc:"15 sessões de mentoria individual para aceleração de carreira e desenvolvimento de liderança empresarial.",valor:5000,prov:"Ricardo Mendes",provIni:"RM",cidade:"Remoto",formato:"Remoto",prazo:"15 semanas"},
+  {id:7,nome:"Programa de Fisioterapia Preventiva",cat:"Saúde",desc:"Avaliação postural completa e 12 sessões de fisioterapia preventiva e funcional para executivos.",valor:5500,prov:"Dra. Carla Nunes",provIni:"CN",cidade:"Curitiba, PR",formato:"Presencial",prazo:"3 meses"},
+  {id:8,nome:"Automação de Processos com Python",cat:"Tecnologia",desc:"Desenvolvimento de automações e scripts personalizados para otimizar processos internos. Entrega com documentação.",valor:8000,prov:"DevTech Solutions",provIni:"DV",cidade:"Remoto",formato:"Remoto",prazo:"21 dias úteis"},
+  {id:9,nome:"Campanha de Fotografia Corporativa",cat:"Marketing",desc:"Ensaio fotográfico corporativo completo: headshots, produto e evento. Entrega de 100+ fotos editadas em 72h.",valor:5000,prov:"Studio Lens",provIni:"SL",cidade:"São Paulo, SP",formato:"Presencial",prazo:"72 horas"},
+];
+const provColors=[["#E4F5F2","#0D6E5E"],["#DCFCE7","#15803D"],["#FBF3E2","#8A6420"],["#ECEFFE","#3D4FA0"],["#FBE9E6","#D95F4B"],["#EFF0EF","#4F5752"],["#E4F5F2","#0F8370"],["#DCFCE7","#166534"],["#FBF3E2","#92620A"]];
+const matches=[
+  {id:1,novo:true,tipo:"Trilateral",partes:[{nome:"Dra. Tatiana",svc:"Harmonização Facial",val:8000,recebe:"UP Financeiro"},{nome:"UP Financeiro",svc:"Valuation Empresarial",val:9000,recebe:"ZRP Tecnologia"},{nome:"ZRP Tecnologia",svc:"Site com IA",val:12000,recebe:"Dra. Tatiana"}],status:"Aguardando aceite"},
+  {id:2,novo:true,tipo:"Bilateral",partes:[{nome:"Dr. Marcos Lima",svc:"Assessoria Jurídica",val:6000,recebe:"Ana Paula Marketing"},{nome:"Ana Paula Marketing",svc:"Gestão de Redes 6m",val:7500,recebe:"Dr. Marcos Lima"}],status:"Em negociação"},
+  {id:3,novo:false,tipo:"Bilateral",partes:[{nome:"Ricardo Mendes",svc:"Mentoria Executiva",val:5000,recebe:"DevTech Solutions"},{nome:"DevTech Solutions",svc:"Automação Python",val:8000,recebe:"Ricardo Mendes"}],status:"Contrato assinado"},
+];
+const txns=[
+  {tipo:"in",desc:"Permuta recebida — ZRP Tecnologia",data:"28 mai 2025",val:12000},
+  {tipo:"fee",desc:"Fee 10% — Permuta #47 (via Pix)",data:"28 mai 2025",val:-1200},
+  {tipo:"in",desc:"Permuta recebida — Dr. Marcos Lima",data:"15 mai 2025",val:6000},
+  {tipo:"fee",desc:"Fee 10% — Permuta #38 (via Pix)",data:"15 mai 2025",val:-600},
+  {tipo:"in",desc:"Permuta recebida — Ricardo Mendes",data:"02 mai 2025",val:5000},
+  {tipo:"fee",desc:"Fee 10% — Permuta #29 (via Pix)",data:"02 mai 2025",val:-500},
+  {tipo:"out",desc:"Permuta enviada — Dra. Tatiana",data:"10 abr 2025",val:-8000},
+];
+const adminUsers=[
+  {nome:"Dra. Tatiana Melo",cat:"Saúde",uniu:8000,perm:3,status:"status-active",sl:"Ativo"},
+  {nome:"ZRP Tecnologia",cat:"Tecnologia",uniu:12000,perm:5,status:"status-active",sl:"Ativo"},
+  {nome:"UP Financeiro",cat:"Financeiro",uniu:9000,perm:2,status:"status-active",sl:"Ativo"},
+  {nome:"Dr. Marcos Lima",cat:"Jurídico",uniu:6000,perm:1,status:"status-pending",sl:"Em análise"},
+  {nome:"Ana Paula Marketing",cat:"Marketing",uniu:7500,perm:4,status:"status-active",sl:"Ativo"},
+  {nome:"Ricardo Mendes",cat:"Educação",uniu:5000,perm:6,status:"status-active",sl:"Ativo"},
+];
+const adminTxns=[
+  {match:"Tatiana ↔ ZRP ↔ UP",partes:"3 participantes",val:29000,fee:2900,data:"01 jun 2025"},
+  {match:"Marcos ↔ Ana Paula",partes:"2 participantes",val:13500,fee:1350,data:"30 mai 2025"},
+  {match:"Ricardo ↔ DevTech",partes:"2 participantes",val:13000,fee:1300,data:"28 mai 2025"},
+];
+// ===== RENDER HELPERS =====
+function svcCard(s,i){
+  const [bg,col]=provColors[i%provColors.length];
+  const cc=catClass[s.cat]||'tag-teal';
+  return `<div class="svc-card" onclick="toast('Match iniciado com ${s.prov}! Aguarde o contato.')">
+    <div class="svc-top"><div><div class="svc-name">${s.nome}</div><span class="tag ${cc}" style="margin-top:6px">${s.cat}</span></div></div>
+    <div class="svc-desc">${s.desc}</div>
+    <div class="svc-price">${s.valor.toLocaleString('pt-BR')} <small style="font-size:14px">UniU</small></div>
+    <div class="svc-price-brl">R$ ${s.valor.toLocaleString('pt-BR')},00 • ${s.formato} • ${s.prazo}</div>
+    <div class="svc-footer">
+      <div class="prov-av" style="background:${bg};color:${col}">${s.provIni}</div>
+      <span class="prov-name-sm">${s.prov} • ${s.cidade}</span>
+      <div class="verified-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verificado</div>
+    </div>
+  </div>`;
+}
+function renderFeatured(){document.getElementById('featured-grid').innerHTML=services.slice(0,6).map((s,i)=>svcCard(s,i)).join('')}
+function renderCatalog(){
+  const cat=document.getElementById('filtro-cat').value;
+  const fmt=document.getElementById('filtro-formato').value;
+  const q=(document.getElementById('search-cat').value||'').toLowerCase();
+  const f=services.filter(s=>(!cat||s.cat===cat)&&(!fmt||s.formato===fmt)&&(!q||s.nome.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.prov.toLowerCase().includes(q)));
+  document.getElementById('catalog-grid').innerHTML=f.length?f.map((s,i)=>svcCard(s,i)).join(''):`<div class="empty-state" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><div style="font-size:16px;font-weight:500;color:var(--gray-600)">Nenhum serviço encontrado</div></div>`;
+}
+function renderMatches(){
+  document.getElementById('match-list').innerHTML=matches.map(m=>{
+    const total=m.partes.reduce((a,p)=>a+p.val,0);
+    const fee=Math.round(total*0.1);
+    const arrow=`<div class="match-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>`;
+    const partsHtml=m.partes.map((p,i)=>`${i>0?arrow:''}<div class="match-party"><div class="mp-name">${p.nome}</div><div class="mp-svc">Oferece: ${p.svc}</div><div class="mp-svc" style="margin-top:2px">Recebe de: ${p.recebe}</div><div class="mp-val">${p.val.toLocaleString('pt-BR')} UniU</div></div>`).join('');
+    const statusCl=m.status==='Contrato assinado'?'status-done':m.status==='Em negociação'?'status-pending':'tag-teal';
+    return `<div class="match-card ${m.novo?'novo':''}">
+      <div class="match-header"><div><div class="match-title">Permuta ${m.tipo} #${m.id}</div><div style="font-size:13px;color:var(--gray-400);margin-top:2px">${m.partes.length} participantes • Total: ${total.toLocaleString('pt-BR')} UniU</div></div><div style="display:flex;gap:8px;align-items:center">${m.novo?'<span class="tag tag-teal">Novo</span>':''}<span class="tag ${statusCl}">${m.status}</span></div></div>
+      <div class="match-flow">${partsHtml}</div>
+      <div class="match-footer"><div class="match-fee-info">Fee (Pix): <strong>${fee.toLocaleString('pt-BR')} UniU</strong> &nbsp;|&nbsp; Volume: <strong>${total.toLocaleString('pt-BR')} UniU</strong></div><div class="match-actions"><button class="btn btn-ghost btn-sm" onclick="toast('Contrato da permuta #${m.id} aberto.')">Ver contrato</button><button class="btn btn-teal btn-sm" onclick="toast('Permuta #${m.id} aceita! Partes notificadas.')">Aceitar permuta</button></div></div>
+    </div>`;
+  }).join('');
+}
+function renderTxnItem(t){
+  const icons={in:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`,out:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>`,fee:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`};
+  const cls={in:'txn-in',out:'txn-out',fee:'txn-fee'};
+  const amtCls=t.val>0?'in':'out';
+  const sign=t.val>0?'+':'';
+  return `<div class="txn-item"><div class="txn-icon ${cls[t.tipo]}">${icons[t.tipo]}</div><div class="txn-info-col"><div class="txn-name">${t.desc}</div><div class="txn-date">${t.data}</div></div><div class="txn-amount ${amtCls}">${sign}${t.val.toLocaleString('pt-BR')} UniU</div></div>`;
+}
+function renderAdmin(){
+  document.getElementById('admin-metrics').innerHTML=`
+    <div class="metric-card"><div class="m-icon" style="background:var(--teal-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div class="m-val">342</div><div class="m-label">Usuários cadastrados</div><div class="m-trend">+18 este mês</div></div>
+    <div class="metric-card"><div class="m-icon" style="background:var(--indigo-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg></div><div class="m-val">47</div><div class="m-label">Permutas ativas</div><div class="m-trend">+5 esta semana</div></div>
+    <div class="metric-card"><div class="m-icon" style="background:var(--gold-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="m-val">2,4M UniU</div><div class="m-label">Volume total permutado</div><div class="m-trend">+240K este mês</div></div>
+    <div class="metric-card"><div class="m-icon" style="background:var(--coral-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="m-val">R$ 24K</div><div class="m-label">Receita em fees (mês)</div><div class="m-trend">10% via Pix</div></div>`;
+  document.getElementById('admin-users-table').innerHTML=adminUsers.map(u=>`<tr><td class="td-bold">${u.nome}</td><td><span class="tag ${catClass[u.cat]||'tag-teal'}">${u.cat}</span></td><td>${u.uniu.toLocaleString('pt-BR')}</td><td>${u.perm}</td><td><span class="tag ${u.status}">${u.sl}</span></td><td><button class="btn btn-ghost btn-sm" onclick="toast('Perfil de ${u.nome} aberto.')">Ver perfil</button></td></tr>`).join('');
+  document.getElementById('admin-txn-table').innerHTML=adminTxns.map(a=>`<tr><td class="td-bold">${a.match}</td><td>${a.partes}</td><td>${a.val.toLocaleString('pt-BR')}</td><td style="color:var(--teal);font-weight:500">${a.fee.toLocaleString('pt-BR')} (Pix)</td><td>${a.data}</td><td style="display:flex;gap:6px"><button class="btn btn-teal btn-sm" onclick="toast('Aprovado. Instruções de Pix enviadas.')">Aprovar</button><button class="btn btn-danger btn-sm" onclick="toast('Enviado para revisão.')">Revisar</button></td></tr>`).join('');
+}
+// ===== DASHBOARD PANELS =====
+function showPanel(panelId){
+  document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.dash-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  // activate corresponding button
+  const map={'painel-dashboard':0,'painel-ofertas':1,'painel-associados':2,'painel-minhas-ofertas':3,'painel-transacoes':4,'painel-extrato':5};
+  const btns=document.querySelectorAll('.dash-nav-btn');
+  if(map[panelId]!==undefined) btns[map[panelId]].classList.add('active');
+  if(panelId==='painel-dashboard'){renderDashRecent()}
+  if(panelId==='painel-associados'){renderDashAssoc()}
+  if(panelId==='painel-minhas-ofertas'){renderMinhasOfertas()}
+  if(panelId==='painel-transacoes'){renderDashTxns()}
+  if(panelId==='painel-extrato'){renderExtrato()}
+}
+function nav2(p){
+  // navigate to page without switching dash panel
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const renders={catalogo:renderCatalog};
+  if(renders[p])renders[p]();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderDashRecent(){
+  document.getElementById('dash-recent-txns').innerHTML=txns.slice(0,4).map(renderTxnItem).join('');
+}
+function renderDashAssoc(){
+  document.getElementById('dash-assoc-table').innerHTML=adminUsers.map(u=>`<tr><td class="td-bold">${u.nome}</td><td><span class="tag ${catClass[u.cat]||'tag-teal'}">${u.cat}</span></td><td>${u.perm}</td><td><span class="tag ${u.status}">${u.sl}</span></td></tr>`).join('');
+}
+function renderMinhasOfertas(){
+  const myServices=services.slice(0,2); // simula serviços do usuário logado
+  document.getElementById('minhas-ofertas-list').innerHTML=myServices.map((s,i)=>`
+    <div class="card" style="margin-bottom:12px;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:var(--font-head);font-size:15px;font-weight:500;margin-bottom:4px">${s.nome}</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="tag ${catClass[s.cat]||'tag-teal'}">${s.cat}</span>
+          <span class="tag status-active">Ativo</span>
+          <span style="font-size:13px;color:var(--gray-400)">${s.valor.toLocaleString('pt-BR')} UniU • ${s.formato}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="toast('Editor de oferta aberto.')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="toast('Oferta pausada.')">Pausar</button>
+      </div>
+    </div>`).join('');
+}
+function renderDashTxns(){
+  const concluidas=[
+    {desc:"Consultoria Financeira",parceiro:"ZRP Tecnologia",val:12000,fee:1200,data:"28 mai 2025"},
+    {desc:"Consultoria Financeira",parceiro:"Dr. Marcos Lima",val:6000,fee:600,data:"15 mai 2025"},
+    {desc:"Mentoria Executiva",parceiro:"Ricardo Mendes",val:5000,fee:500,data:"02 mai 2025"},
+  ];
+  document.getElementById('dash-txn-table').innerHTML=concluidas.map(t=>`<tr>
+    <td class="td-bold">${t.desc}</td>
+    <td>${t.parceiro}</td>
+    <td style="color:var(--teal);font-weight:500">+${t.val.toLocaleString('pt-BR')}</td>
+    <td style="color:#8A6420">${t.fee.toLocaleString('pt-BR')} (Pix)</td>
+    <td>${t.data}</td>
+    <td><span class="tag status-done">Concluída</span></td>
+  </tr>`).join('');
+}
+function renderExtrato(){
+  document.getElementById('extrato-list').innerHTML=txns.map(renderTxnItem).join('');
+}
+// ===== FORM =====
+function updateUniu(){const v=parseFloat(document.getElementById('f-valor').value)||0;document.getElementById('uniu-preview').textContent=v.toLocaleString('pt-BR')+' UniU';}
+function submitService(){
+  const nome=document.getElementById('f-nome').value.trim();
+  const cat=document.getElementById('f-cat').value;
+  const valor=parseFloat(document.getElementById('f-valor').value)||0;
+  if(!nome){toast('Informe o nome do serviço.','err');return}
+  if(!cat){toast('Selecione uma categoria.','err');return}
+  if(!valor||valor<5000){toast('Valor mínimo: R$ 5.000.','err');return}
+  toast('Serviço enviado para curadoria! Retorno em até 5 dias úteis.');
+  clearForm();
+  setTimeout(()=>nav('catalogo'),1800);
+}
+function clearForm(){['f-nome','f-desc','f-valor','f-cidade','f-prazo','f-troca'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-cat').value='';document.getElementById('uniu-preview').textContent='0 UniU';}
+// ===== NAV =====
+function nav(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.topnav button').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const idx={home:0,catalogo:1,matches:2,cadastro:3,dashboard:4,faq:5,contrato:6,admin:7};
+  if(idx[p]!==undefined)document.querySelectorAll('.topnav button')[idx[p]].classList.add('active');
+  const renders={catalogo:renderCatalog,matches:renderMatches,faq:renderFaq,contrato:renderContrato,admin:renderAdmin,dashboard:()=>showPanel('painel-dashboard')};
+  if(renders[p])renders[p]();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+// ===== TOAST =====
+let toastTimer;
+function toast(msg,type){
+  clearTimeout(toastTimer);
+  const el=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  el.style.background=type==='err'?'#B91C1C':'var(--gray-900)';
+  el.classList.add('show');
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3200);
+}
+// ===== FAQ =====
+function renderFaq(){
+  const faqCategories=[
+    {cat:"Primeiros passos",color:"var(--teal)",bg:"var(--teal-light)",icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,faqs:[
+      {q:"O que é o Mundo das Permutas?",a:"O <strong>Mundo das Permutas</strong> é uma plataforma digital brasileira especializada em <strong>permuta de serviços e produtos</strong>. Conectamos profissionais e empresas que desejam trocar o que oferecem pelo que precisam, usando como moeda de troca o <strong>UniU</strong> — nossa unidade de valor interna (R$ 1,00 = 1 UniU). A plataforma funciona com matchmaking por inteligência artificial, que busca correspondências dentro e fora da rede cadastrada."},
+      {q:"Quanto custa participar?",a:"Participar é <strong>100% gratuito</strong>. Não há mensalidade, taxa de adesão ou qualquer custo fixo. Os <strong>primeiros 100 associados não pagam anuidade</strong>. A plataforma cobra apenas <strong>10% sobre o valor em UniU</strong> de cada permuta efetivamente concluída, pago via <strong>Pix</strong> para a conta da plataforma. Se nenhuma permuta acontecer, você não paga absolutamente nada."},
+      {q:"Quem pode se cadastrar?",a:"Qualquer <strong>pessoa física (CPF)</strong> maior de 18 anos com um serviço ou produto cujo valor seja de <strong>no mínimo R$ 5.000</strong>. O cadastro de pessoas jurídicas (CNPJ) está previsto para fases futuras. Todos os participantes passam por curadoria antes de ingressar na plataforma."},
+      {q:"Como faço para me cadastrar?",a:"Envie um e-mail para <strong>cadastro@mundodaspermutas.com.br</strong> com: (1) descrição detalhada do serviço ou produto; (2) valor pretendido (mínimo R$ 5.000); (3) cópia de RG ou CNH e CPF; (4) se for produto físico, fotos em boa qualidade (mínimo 3, fundo neutro). Nossa equipe avalia em até <strong>5 dias úteis</strong>."}
+    ]},
+    {cat:"Aviso importante — riscos da operação",color:"#C2410C",bg:"#FFF7ED",icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,faqs:[
+      {q:"O Mundo das Permutas garante a operação?",a:"<strong>Não.</strong> O Mundo das Permutas <strong>não é garantidor nem avalista</strong> de qualquer permuta realizada entre os associados. Somos exclusivamente uma plataforma de intermediação e matchmaking. Cada permuta é uma negociação direta entre as partes envolvidas, e <strong>cada participante assume integralmente o risco</strong> da operação que aceita realizar."},
+      {q:"O que acontece se o parceiro não cumprir a permuta?",a:"O Mundo das Permutas <strong>não se responsabiliza pelo inadimplemento</strong> de qualquer participante. Em caso de descumprimento, as partes devem resolver diretamente ou acionar as vias legais cabíveis. A plataforma pode suspender ou excluir usuários inadimplentes, mas <strong>não tem obrigação de ressarcir a parte prejudicada</strong>. Por isso, recomendamos avaliar bem o histórico e a reputação do parceiro antes de aceitar um match."},
+      {q:"A plataforma responde por qualidade dos serviços prestados?",a:"<strong>Não.</strong> A qualidade dos serviços e produtos trocados é de responsabilidade exclusiva de quem os oferece. O Mundo das Permutas faz curadoria para garantir a clareza e veracidade das informações cadastradas, mas não inspeciona a execução das permutas nem responde por divergências de qualidade, prazo ou escopo."},
+      {q:"Preciso tomar algum cuidado antes de aceitar um match?",a:"Sim. Antes de aceitar qualquer permuta recomendamos: (1) verificar o histórico e avaliações do parceiro na plataforma; (2) formalizar todos os termos no contrato disponibilizado pela plataforma; (3) alinhar detalhes de entrega, prazo e qualidade antes da assinatura; (4) lembrar que <strong>a permuta é por sua conta e risco</strong> — a plataforma não garante o resultado."}
+    ]},
+    {cat:"UniU — A moeda interna",color:"#0D6E5E",bg:"var(--teal-light)",icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>`,faqs:[
+      {q:"O que é o UniU?",a:"O <strong>UniU</strong> é a unidade de valor interna da plataforma. A equivalência é direta: <strong>R$ 1,00 = 1 UniU</strong>. Quando você presta um serviço ou entrega um produto, recebe o valor acordado em UniU. Com esse saldo, você 'contrata' serviços e produtos de outros participantes da rede. O UniU não é conversível em dinheiro, não pode ser sacado e não é criptomoeda."},
+      {q:"Posso sacar meu saldo em dinheiro?",a:"Não. O UniU é uma unidade de valor <strong>exclusivamente interna</strong> à plataforma e não pode ser convertido em reais ou qualquer outra moeda. O saldo serve unicamente para obter serviços e produtos de outros participantes da rede Mundo das Permutas."},
+      {q:"O UniU expira?",a:"O saldo em UniU <strong>não expira</strong> enquanto sua conta estiver ativa. Em caso de encerramento da conta ou da plataforma, o saldo em UniU não gera obrigação de pagamento em dinheiro, conforme o Contrato de Adesão."}
+    ]},
+    {cat:"Matchmaking por IA",color:"var(--indigo)",bg:"var(--indigo-light)",icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>`,faqs:[
+      {q:"Como funciona o matchmaking por IA?",a:"Nossa inteligência artificial analisa os serviços e produtos cadastrados e os que cada participante deseja receber em troca, buscando correspondências <strong>dentro e fora da plataforma</strong>. Quanto mais detalhada for sua descrição, <strong>mais preciso e amplo será o processo de match</strong>."},
+      {q:"O que é uma permuta trilateral?",a:"Diferente da permuta direta (A troca com B), a <strong>permuta trilateral</strong> é quando: A serve B, B serve C e C serve A — todos recebem e prestam serviços sem que nenhum precise desembolsar dinheiro. Isso amplia enormemente as possibilidades de match."},
+      {q:"Sou obrigado a aceitar um match?",a:"Não. A participação em permutas é <strong>sempre voluntária</strong>. Quando nossa IA identifica um match, você recebe uma notificação e tem total liberdade para aceitar ou recusar, sem qualquer penalidade."}
+    ]},
+    {cat:"Pagamentos e taxa de 10%",color:"var(--coral)",bg:"var(--coral-light)",icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,faqs:[
+      {q:"Como e quando é cobrada a taxa de 10%?",a:"A taxa de <strong>10%</strong> é cobrada <strong>somente após a conclusão confirmada da permuta</strong>. O pagamento é feito via <strong>Pix</strong> para a conta da plataforma Mundo das Permutas, mediante instrução enviada por e-mail. Nenhuma cobrança ocorre antes disso. Exemplo: permuta de 10.000 UniU → taxa de <strong>R$ 1.000 via Pix</strong>."},
+      {q:"Por que a taxa é paga via Pix?",a:"A taxa de intermediação é cobrada em reais via Pix para a conta da plataforma. Isso separa claramente a moeda interna (UniU, usada para as permutas) do pagamento pela intermediação (em reais, após a conclusão). Você recebe as instruções completas de Pix por e-mail assim que a permuta for confirmada como concluída."},
+      {q:"A taxa tem alguma relação com garantia?",a:"<strong>Não.</strong> A taxa é pela intermediação, pelo matchmaking e pela estrutura da plataforma — não constitui qualquer garantia, seguro ou aval da operação. O Mundo das Permutas não é garantidor nem avalista. Cada permuta é por conta e risco das partes envolvidas."}
+    ]}
+  ];
+  let globalIdx=0;
+  document.getElementById('faq-accordion').innerHTML=faqCategories.map((cat)=>{
+    const catFaqs=cat.faqs.map((f)=>{
+      const idx=globalIdx++;
+      return `<div style="border-top:1px solid var(--gray-100)" id="faq-item-${idx}">
+        <button onclick="toggleFaq(${idx})" style="width:100%;text-align:left;background:none;border:none;padding:14px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--font-body)">
+          <span style="font-size:14px;font-weight:500;color:var(--gray-900);line-height:1.5">${f.q}</span>
+          <svg id="faq-icon-${idx}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${cat.color}" stroke-width="2" style="flex-shrink:0;transition:transform 0.2s"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="faq-answer-${idx}" style="display:none;padding:0 20px 16px 20px;font-size:13.5px;color:var(--gray-700);line-height:1.8">${f.a}</div>
+      </div>`;
+    }).join('');
+    return `<div style="background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);margin-bottom:12px;overflow:hidden">
+      <div style="padding:14px 20px;background:${cat.bg};display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--gray-200)">
+        <span style="color:${cat.color};display:flex;align-items:center">${cat.icon}</span>
+        <span style="font-family:var(--font-head);font-size:13.5px;font-weight:500;color:${cat.color}">${cat.cat}</span>
+        <span style="margin-left:auto;font-size:12px;color:${cat.color};opacity:0.7">${cat.faqs.length} perguntas</span>
+      </div>
+      ${catFaqs}
+    </div>`;
+  }).join('');
+}
+function toggleFaq(i){
+  const ans=document.getElementById('faq-answer-'+i);
+  const icon=document.getElementById('faq-icon-'+i);
+  const open=ans.style.display==='block';
+  ans.style.display=open?'none':'block';
+  icon.style.transform=open?'':'rotate(180deg)';
+}
+// ===== CONTRATO =====
+function renderContrato(){
+  const clausulas=[
+    {t:"1. QUALIFICAÇÃO DAS PARTES",body:"A CONTRATADA é a empresa gestora da plataforma <strong>Mundo das Permutas</strong>. O CONTRATANTE é a pessoa física (CPF) que adere à plataforma na qualidade de ofertante de serviços e/ou produtos."},
+    {t:"2. OBJETO DO CONTRATO",body:"Este contrato regula o acesso e uso da plataforma <strong>Mundo das Permutas</strong>. A plataforma é especializada em intermediação de permuta de serviços e produtos, conectando profissionais com base em equivalência de valor expressa na moeda interna UniU. A plataforma não é parte nas permutas realizadas — atua como intermediadora, realizando curadoria, matchmaking por IA e formalização contratual."},
+    {t:"3. MOEDA VIRTUAL UniU",body:"O UniU é a unidade de valor interna da plataforma. A equivalência de referência é R$ 1,00 = 1 UniU. O UniU não é moeda de curso legal, ativo financeiro nem criptomoeda. O saldo só pode ser usado para adquirir serviços e produtos de outros usuários da plataforma — não é conversível em dinheiro nem passível de saque."},
+    {t:"4. CURADORIA E APROVAÇÃO DE CADASTROS",body:"Todo serviço ou produto cadastrado passa pela curadoria da plataforma antes de ser publicado. O objetivo é garantir a qualidade e clareza das informações para o bom funcionamento do matchmaking. O cadastro é gratuito. A plataforma se reserva o direito de recusar cadastros sem obrigação de justificativa detalhada. O prazo de avaliação é de até 5 dias úteis."},
+    {t:"5. VALOR MÍNIMO DE CADASTRO",body:"O valor mínimo para cadastro de serviços ou produtos na plataforma é de <strong>R$ 5.000,00 (cinco mil reais)</strong>, equivalente a 5.000 UniU. Itens com valor inferior não serão aceitos."},
+    {t:"6. EXCEÇÕES — CATEGORIAS NÃO ACEITAS",body:"A plataforma não aceita o cadastro de <strong>imóveis</strong> de qualquer natureza (residenciais, comerciais, rurais). A intermediação de compra, venda ou locação de imóveis exige habilitação no CRECI, que não faz parte do escopo da plataforma. Também não são aceitos serviços ou produtos ilegais ou que violem a legislação brasileira."},
+    {t:"7. ISENÇÃO DE ANUIDADE — PRIMEIROS 100 ASSOCIADOS",body:"Os primeiros 100 (cem) associados cadastrados e aprovados na plataforma ficam isentos de qualquer taxa de anuidade ou mensalidade enquanto mantiverem o cadastro ativo. Esta isenção é nominal e intransferível. A única cobrança aplicável é a taxa de intermediação de 10% sobre permutas efetivamente concluídas, conforme cláusula 9."},
+    {t:"8. OBRIGAÇÕES DO CONTRATANTE",body:"(a) Cadastrar serviços e produtos com informações verídicas e completas; (b) Entregar o serviço ou produto conforme condições, prazo e qualidade descritos; (c) Manter dados cadastrais atualizados; (d) Comunicar impossibilidade de cumprimento com 5 dias úteis de antecedência; (e) Agir com boa-fé e profissionalismo; (f) Não utilizar a plataforma para fins ilegais ou fraudulentos."},
+    {t:"9. REMUNERAÇÃO — TAXA DE INTERMEDIAÇÃO (10% via Pix)",body:"A plataforma cobra <strong>10% (dez por cento)</strong> sobre o valor total em UniU de cada permuta efetivamente realizada e concluída. O pagamento é efetuado em reais via <strong>Pix</strong> para a conta da plataforma Mundo das Permutas, mediante instruções enviadas por e-mail após a confirmação da conclusão da permuta. Nenhuma cobrança ocorre se a permuta não se concretizar. Exemplo: permuta de 10.000 UniU → taxa de R$ 1.000 via Pix."},
+    {t:"10. AUSÊNCIA DE GARANTIA OU AVAL — RISCO DO ASSOCIADO",body:"<strong>O Mundo das Permutas não é garantidor nem avalista de qualquer permuta realizada entre os associados.</strong> A plataforma atua exclusivamente como intermediadora. Cada permuta é uma negociação direta entre as partes, e cada participante assume integralmente o risco da operação que aceita realizar. A plataforma não se responsabiliza pela qualidade dos serviços ou produtos trocados, pelo inadimplemento de terceiros usuários ou por eventuais danos decorrentes das permutas."},
+    {t:"11. INADIMPLEMENTO E PENALIDADES",body:"O não cumprimento de permuta formalizada sem justificativa aceita sujeita o Contratante a: (a) suspensão temporária do perfil; (b) bloqueio do saldo em UniU por até 60 dias; (c) exclusão definitiva em caso de reincidência ou fraude; (d) responsabilidade civil pelos danos causados à contraparte. A plataforma não responde por inadimplemento de terceiros usuários."},
+    {t:"12. LIMITAÇÃO DE RESPONSABILIDADE",body:"A responsabilidade máxima da plataforma, em qualquer hipótese, é limitada ao valor das taxas de intermediação efetivamente pagas pelo Contratante nos últimos 12 meses. A plataforma não responde por danos indiretos, lucros cessantes ou perda de oportunidade."},
+    {t:"13. LGPD — PROTEÇÃO DE DADOS",body:"O tratamento de dados observa a Lei n.º 13.709/2018. Dados usados exclusivamente para operação da plataforma, matchmaking, comunicações e obrigações legais. Direitos de acesso, correção e eliminação: <strong>privacidade@mundodaspermutas.com.br</strong>."},
+    {t:"14. VIGÊNCIA E RESCISÃO",body:"Contrato de prazo indeterminado a partir do aceite eletrônico. Rescisão pelo Contratante com 10 dias úteis de antecedência, sem permutas pendentes. Saldo em UniU não gera obrigação de pagamento em dinheiro após rescisão. Foro eleito: comarca de São Paulo/SP."}
+  ];
+  document.getElementById('contrato-body').innerHTML=clausulas.map(c=>`
+    <div style="margin-bottom:1.5rem">
+      <div style="font-family:var(--font-head);font-size:14px;font-weight:500;color:var(--teal);margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--teal-light)">${c.t}</div>
+      <div style="color:var(--gray-700);font-size:13.5px;line-height:1.8">${c.body}</div>
+    </div>`).join('');
+}
+function aceitarContrato(){
+  if(!document.getElementById('aceite-check').checked){toast('Marque a caixa de aceite para continuar.','err');return}
+  toast('Contrato aceito! Redirecionando para cadastro de serviço.');
+  setTimeout(()=>nav('cadastro'),1600);
+}
+// ===== INIT =====
+renderFeatured();
+</script>
+</body>
+</html>
