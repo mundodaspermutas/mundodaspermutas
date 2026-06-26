@@ -328,7 +328,7 @@ tbody tr:hover td{background:var(--gray-50)}
     <div class="hero">
       <div class="hero-content">
         <div class="hero-badge"><span></span> Plataforma 100% brasileira</div>
-        <h1>Troque serviços<br>e produtos.<br><em>Cresça sem gastar.</em></h1>
+        <h1>Troque serviços<br>e produtos.<br><em>Seja inteligente.</em></h1>
         <p>O Mundo das Permutas conecta profissionais e empresas para permutar serviços e produtos com equivalência de valor — sem desembolso financeiro imediato. R$ 1 = 1 UniU.</p>
         <div class="hero-btns">
           <button class="btn btn-gold" onclick="nav('cadastro')">
@@ -409,6 +409,21 @@ tbody tr:hover td{background:var(--gray-50)}
         <div class="how-step-num">Passo 04</div>
         <h3>Contrato e pagamento</h3>
         <p>Permuta formalizada com contrato. Taxa de 10% via Pix somente após a conclusão da permuta.</p>
+      </div>
+    </div>
+    <!-- CADASTRE-SE CTA -->
+    <div style="background:linear-gradient(135deg,var(--gold) 0%,#b8872e 100%);border-radius:var(--radius-xl);padding:2.5rem 3rem;margin-bottom:3rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.07)"></div>
+      <div style="position:relative;flex:1;min-width:200px">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:4px 14px;font-size:12px;color:#fff;margin-bottom:1rem"><span style="width:7px;height:7px;border-radius:50%;background:#4ADE80;display:inline-block"></span> Cadastro gratuito</div>
+        <div style="font-family:var(--font-head);font-size:26px;font-weight:500;color:#fff;line-height:1.2;margin-bottom:8px">Cadastre seu produto<br>ou serviço aqui</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.88);line-height:1.7">Faça parte da rede. Nossa equipe avalia em até 5 dias úteis.<br>Você só paga 10% via Pix se e quando uma permuta acontecer.</div>
+      </div>
+      <div style="position:relative;flex-shrink:0">
+        <button onclick="abrirModalCadastro()" style="background:#fff;color:var(--gold);border:none;padding:16px 36px;border-radius:var(--radius-lg);font-size:16px;font-weight:600;cursor:pointer;font-family:var(--font-body);box-shadow:0 4px 20px rgba(0,0,0,0.15);transition:all 0.2s;display:flex;align-items:center;gap:10px" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.15)'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Cadastrar agora
+        </button>
       </div>
     </div>
     <div class="section-header">
@@ -785,6 +800,53 @@ tbody tr:hover td{background:var(--gray-50)}
     </div>
   </div>
 </div>
+<!-- MODAL CADASTRO -->
+<div class="modal-backdrop" id="modal-cadastro">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Cadastrar Produto ou Serviço</div>
+        <div style="font-size:13px;color:var(--gray-400);margin-top:2px">Gratuito • Resposta em até 5 dias úteis</div>
+      </div>
+      <button class="modal-close" onclick="fecharModalCadastro()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="background:var(--teal-light);border:1px solid var(--teal-soft);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:1.25rem;font-size:13px;color:var(--teal-dark)">
+      <strong>Sem custo para cadastrar.</strong> Você só paga 10% via Pix se e quando uma permuta for realizada.
+    </div>
+    <div class="form-group">
+      <label>Nome completo / Razão social *</label>
+      <input type="text" id="mc-nome" placeholder="Ex: João Silva ou Empresa Ltda">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>CPF ou CNPJ *</label>
+        <input type="text" id="mc-doc" placeholder="000.000.000-00">
+      </div>
+      <div class="form-group">
+        <label>Telefone / WhatsApp *</label>
+        <input type="text" id="mc-tel" placeholder="(11) 99999-9999">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>E-mail *</label>
+      <input type="email" id="mc-email" placeholder="seu@email.com.br">
+    </div>
+    <div class="form-group">
+      <label>Descrição do produto ou serviço *</label>
+      <textarea id="mc-desc" style="min-height:110px" placeholder="Descreva detalhadamente o que você oferece: escopo, valor estimado, diferenciais, prazo de entrega e o que gostaria de receber em troca..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:0.5rem">
+      <button class="btn btn-gold" onclick="enviarCadastro()" style="flex:1;justify-content:center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Enviar para curadoria
+      </button>
+      <button class="btn btn-ghost" onclick="fecharModalCadastro()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -833,11 +895,217 @@ const adminTxns=[
   {match:"Fio de Afeto ↔ Escritório Jurídico",partes:"2 participantes",val:14000,fee:1400,data:"30 mai 2025"},
   {match:"Náutica Premium ↔ Executive Motors",partes:"2 participantes",val:480000,fee:48000,data:"28 mai 2025"},
 ];
+// ===== SVG ILLUSTRATIONS =====
+const svcIllustrations={
+  1:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#E4F5F2" rx="10"/>
+    <!-- face outline -->
+    <ellipse cx="160" cy="72" rx="44" ry="52" fill="#fff" stroke="#0D6E5E" stroke-width="2"/>
+    <!-- eyes -->
+    <ellipse cx="146" cy="62" rx="5" ry="6" fill="#0D6E5E"/>
+    <ellipse cx="174" cy="62" rx="5" ry="6" fill="#0D6E5E"/>
+    <!-- smile -->
+    <path d="M147 84 Q160 96 173 84" fill="none" stroke="#0D6E5E" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- lips highlight -->
+    <ellipse cx="160" cy="80" rx="10" ry="4" fill="#C9973A" opacity="0.4"/>
+    <!-- sparkles -->
+    <text x="210" y="40" font-size="18" fill="#C9973A">✦</text>
+    <text x="90" y="35" font-size="12" fill="#0D6E5E">✦</text>
+    <text x="225" y="90" font-size="10" fill="#0D6E5E">✦</text>
+    <!-- syringe -->
+    <rect x="195" y="68" width="28" height="7" rx="3" fill="#0D6E5E"/>
+    <rect x="223" y="70" width="8" height="3" rx="1" fill="#094E43"/>
+    <line x1="199" y1="75" x2="199" y2="82" stroke="#0D6E5E" stroke-width="2"/>
+    <line x1="205" y1="75" x2="205" y2="82" stroke="#0D6E5E" stroke-width="2"/>
+    <line x1="211" y1="75" x2="211" y2="82" stroke="#0D6E5E" stroke-width="2"/>
+    <text x="100" y="128" font-size="11" fill="#094E43" font-family="serif" font-weight="500">Paiva Clínica Odontológica</text>
+  </svg>`,
+  2:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#FBF3E2" rx="10"/>
+    <!-- building -->
+    <rect x="100" y="40" width="120" height="80" fill="#fff" stroke="#C9973A" stroke-width="2" rx="4"/>
+    <rect x="115" y="55" width="25" height="20" fill="#C9973A" opacity="0.3" rx="2"/>
+    <rect x="150" y="55" width="25" height="20" fill="#C9973A" opacity="0.3" rx="2"/>
+    <rect x="185" y="55" width="20" height="20" fill="#C9973A" opacity="0.3" rx="2"/>
+    <rect x="115" y="85" width="25" height="20" fill="#C9973A" opacity="0.3" rx="2"/>
+    <rect x="150" y="85" width="25" height="20" fill="#C9973A" opacity="0.3" rx="2"/>
+    <rect x="185" y="85" width="20" height="20" fill="#C9973A" opacity="0.3" rx="2"/>
+    <!-- magnifier -->
+    <circle cx="240" cy="50" r="18" fill="none" stroke="#C9973A" stroke-width="3"/>
+    <line x1="253" y1="63" x2="265" y2="75" stroke="#C9973A" stroke-width="3" stroke-linecap="round"/>
+    <!-- chart inside magnifier -->
+    <polyline points="230,54 237,46 244,50 251,42" fill="none" stroke="#C9973A" stroke-width="2"/>
+    <text x="95" y="130" font-size="11" fill="#8A6420" font-family="serif" font-weight="500">U Properties — Valuation</text>
+  </svg>`,
+  3:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#ECEFFE" rx="10"/>
+    <!-- handshake -->
+    <path d="M100 80 Q130 60 160 70 Q190 80 220 65" fill="none" stroke="#3D4FA0" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="160" cy="70" r="12" fill="#3D4FA0" opacity="0.15"/>
+    <circle cx="160" cy="70" r="6" fill="#3D4FA0"/>
+    <!-- arrows -->
+    <path d="M80 75 L100 80 L90 90" fill="none" stroke="#3D4FA0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M240 65 L220 65 L230 55" fill="none" stroke="#3D4FA0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- coins -->
+    <circle cx="75" cy="50" r="16" fill="#C9973A" opacity="0.8"/>
+    <text x="68" y="55" font-size="14" fill="#fff" font-weight="bold">R$</text>
+    <circle cx="245" cy="50" r="16" fill="#3D4FA0" opacity="0.8"/>
+    <text x="237" y="55" font-size="11" fill="#fff" font-weight="bold">M&A</text>
+    <!-- stars -->
+    <text x="140" y="30" font-size="14" fill="#3D4FA0">★ ★ ★</text>
+    <text x="80" y="128" font-size="11" fill="#3D4FA0" font-family="serif" font-weight="500">U Holdings — Assessoria para Venda</text>
+  </svg>`,
+  4:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#FBE9E6" rx="10"/>
+    <!-- tshirt shape -->
+    <path d="M110 45 L130 35 L140 50 L180 50 L190 35 L210 45 L200 65 L185 60 L185 105 L135 105 L135 60 L120 65 Z" fill="#D95F4B" opacity="0.8"/>
+    <!-- heart on shirt -->
+    <path d="M160 70 Q160 65 155 65 Q150 65 150 70 Q150 78 160 85 Q170 78 170 70 Q170 65 165 65 Q160 65 160 70Z" fill="#fff"/>
+    <!-- name tag -->
+    <rect x="148" y="88" width="24" height="10" rx="2" fill="#fff" opacity="0.7"/>
+    <text x="151" y="96" font-size="7" fill="#D95F4B">NOME</text>
+    <!-- sparkles -->
+    <text x="220" y="50" font-size="16" fill="#C9973A">✦</text>
+    <text x="85" y="60" font-size="12" fill="#D95F4B">✦</text>
+    <text x="100" y="128" font-size="11" fill="#D95F4B" font-family="serif" font-weight="500">Fio de Afeto — Kit Família</text>
+  </svg>`,
+  5:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#EAF3EC" rx="10"/>
+    <!-- box/package -->
+    <rect x="110" y="55" width="70" height="60" rx="4" fill="#5D8A6B" opacity="0.8"/>
+    <rect x="110" y="55" width="70" height="20" rx="4" fill="#5D8A6B"/>
+    <!-- ribbon -->
+    <line x1="145" y1="55" x2="145" y2="115" stroke="#fff" stroke-width="3"/>
+    <line x1="110" y1="65" x2="180" y2="65" stroke="#fff" stroke-width="3"/>
+    <!-- bow -->
+    <path d="M135 55 Q145 45 155 55" fill="none" stroke="#C9973A" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="145" cy="55" r="4" fill="#C9973A"/>
+    <!-- multiple shirts stacked -->
+    <rect x="190" y="60" width="40" height="30" rx="3" fill="#D95F4B" opacity="0.6"/>
+    <rect x="195" y="55" width="40" height="30" rx="3" fill="#3D4FA0" opacity="0.6"/>
+    <rect x="200" y="50" width="40" height="30" rx="3" fill="#5D8A6B" opacity="0.7"/>
+    <text x="85" y="128" font-size="11" fill="#5D8A6B" font-family="serif" font-weight="500">Fio de Afeto — Kit Corporativo</text>
+  </svg>`,
+  6:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#E4F5F2" rx="10"/>
+    <!-- water -->
+    <path d="M0 100 Q80 88 160 100 Q240 112 320 100 L320 140 L0 140Z" fill="#0D6E5E" opacity="0.15"/>
+    <path d="M0 110 Q80 98 160 110 Q240 122 320 110 L320 140 L0 140Z" fill="#0D6E5E" opacity="0.2"/>
+    <!-- boat hull -->
+    <path d="M80 95 Q160 88 240 95 L230 112 Q160 118 90 112 Z" fill="#094E43"/>
+    <!-- cabin -->
+    <rect x="130" y="72" width="60" height="26" rx="4" fill="#fff" stroke="#0D6E5E" stroke-width="1.5"/>
+    <rect x="138" y="78" width="14" height="12" rx="2" fill="#0D6E5E" opacity="0.3"/>
+    <rect x="158" y="78" width="14" height="12" rx="2" fill="#0D6E5E" opacity="0.3"/>
+    <!-- windshield -->
+    <rect x="175" y="75" width="12" height="10" rx="2" fill="#B2DDD7"/>
+    <!-- mast/flag -->
+    <line x1="160" y1="40" x2="160" y2="72" stroke="#094E43" stroke-width="2"/>
+    <path d="M160 40 L178 48 L160 56Z" fill="#C9973A"/>
+    <!-- motor -->
+    <rect x="228" y="100" width="16" height="8" rx="2" fill="#4F5752"/>
+    <text x="85" y="128" font-size="11" fill="#094E43" font-family="serif" font-weight="500">Náutica Premium — Lancha 28 pés</text>
+  </svg>`,
+  7:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#FBF3E2" rx="10"/>
+    <!-- scales of justice -->
+    <line x1="160" y1="30" x2="160" y2="110" stroke="#8A6420" stroke-width="3"/>
+    <line x1="110" y1="55" x2="210" y2="55" stroke="#8A6420" stroke-width="2.5"/>
+    <!-- left pan -->
+    <path d="M110 55 Q100 70 120 75 Q130 78 140 75 Q150 70 140 55" fill="#C9973A" opacity="0.3" stroke="#C9973A" stroke-width="1.5"/>
+    <!-- right pan -->
+    <path d="M210 55 Q200 70 220 75 Q230 78 240 75 Q250 70 240 55" fill="#C9973A" opacity="0.3" stroke="#C9973A" stroke-width="1.5"/>
+    <!-- strings -->
+    <line x1="110" y1="55" x2="120" y2="75" stroke="#8A6420" stroke-width="1.5"/>
+    <line x1="140" y1="55" x2="130" y2="75" stroke="#8A6420" stroke-width="1.5"/>
+    <line x1="210" y1="55" x2="220" y2="75" stroke="#8A6420" stroke-width="1.5"/>
+    <line x1="240" y1="55" x2="230" y2="75" stroke="#8A6420" stroke-width="1.5"/>
+    <!-- top circle -->
+    <circle cx="160" cy="28" r="8" fill="#C9973A"/>
+    <!-- base -->
+    <rect x="145" y="108" width="30" height="6" rx="3" fill="#8A6420"/>
+    <!-- document -->
+    <rect x="68" y="60" width="30" height="38" rx="2" fill="#fff" stroke="#C9973A" stroke-width="1.5"/>
+    <line x1="73" y1="70" x2="93" y2="70" stroke="#C9973A" stroke-width="1.5"/>
+    <line x1="73" y1="77" x2="93" y2="77" stroke="#C9973A" stroke-width="1.5"/>
+    <line x1="73" y1="84" x2="85" y2="84" stroke="#C9973A" stroke-width="1.5"/>
+    <text x="88" y="128" font-size="11" fill="#8A6420" font-family="serif" font-weight="500">Escritório Jurídico — Consultoria</text>
+  </svg>`,
+  8:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#FBE9E6" rx="10"/>
+    <!-- ultrasound machine body -->
+    <rect x="90" y="45" width="80" height="65" rx="6" fill="#fff" stroke="#D95F4B" stroke-width="2"/>
+    <!-- screen -->
+    <rect x="98" y="53" width="64" height="40" rx="3" fill="#0D1B2A"/>
+    <!-- ultrasound waves on screen -->
+    <path d="M115 73 Q130 60 145 73 Q155 80 145 90 Q130 100 115 90 Q105 83 115 73Z" fill="none" stroke="#4ADE80" stroke-width="1.5" opacity="0.8"/>
+    <path d="M122 73 Q130 65 138 73 Q143 78 138 85 Q130 92 122 85 Q117 80 122 73Z" fill="none" stroke="#4ADE80" stroke-width="1" opacity="0.6"/>
+    <circle cx="130" cy="79" r="4" fill="#4ADE80" opacity="0.5"/>
+    <!-- buttons -->
+    <circle cx="103" cy="100" r="3" fill="#D95F4B" opacity="0.5"/>
+    <circle cx="113" cy="100" r="3" fill="#D95F4B" opacity="0.5"/>
+    <circle cx="123" cy="100" r="3" fill="#D95F4B" opacity="0.5"/>
+    <!-- probe/handle -->
+    <path d="M170 75 Q190 68 210 80 Q215 83 210 88 Q190 95 175 88Z" fill="#D95F4B" opacity="0.7"/>
+    <line x1="170" y1="82" x2="145" y2="79" stroke="#4F5752" stroke-width="2"/>
+    <!-- brand -->
+    <text x="98" y="128" font-size="11" fill="#D95F4B" font-family="serif" font-weight="500">MedEquip — Ultrassom 4D Philips</text>
+  </svg>`,
+  9:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#EAF3EC" rx="10"/>
+    <!-- phone/device -->
+    <rect x="125" y="30" width="70" height="90" rx="8" fill="#fff" stroke="#5D8A6B" stroke-width="2"/>
+    <rect x="132" y="40" width="56" height="60" rx="3" fill="#0D1B2A"/>
+    <!-- chart on screen -->
+    <rect x="137" y="80" width="8" height="15" rx="1" fill="#5D8A6B"/>
+    <rect x="149" y="70" width="8" height="25" rx="1" fill="#5D8A6B" opacity="0.8"/>
+    <rect x="161" y="60" width="8" height="35" rx="1" fill="#C9973A"/>
+    <rect x="173" y="65" width="8" height="30" rx="1" fill="#5D8A6B" opacity="0.6"/>
+    <!-- likes/hearts floating -->
+    <text x="205" y="55" font-size="16" fill="#D95F4B">♥</text>
+    <text x="215" y="75" font-size="12" fill="#D95F4B" opacity="0.7">♥</text>
+    <text x="88" y="60" font-size="14" fill="#5D8A6B">👍</text>
+    <text x="78" y="85" font-size="12" fill="#5D8A6B" opacity="0.7">👍</text>
+    <!-- wifi/signal -->
+    <path d="M155 48 Q160 43 165 48" fill="none" stroke="#5D8A6B" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M151 45 Q160 37 169 45" fill="none" stroke="#5D8A6B" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="160" cy="51" r="2" fill="#5D8A6B"/>
+    <text x="88" y="128" font-size="11" fill="#5D8A6B" font-family="serif" font-weight="500">Agência Digital — Tráfego Pago</text>
+  </svg>`,
+  10:`<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="140" fill="#EFF0EF" rx="10"/>
+    <!-- road -->
+    <rect x="0" y="95" width="320" height="20" fill="#DCDEDD"/>
+    <line x1="0" y1="105" x2="320" y2="105" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+    <!-- car 1 (front) -->
+    <rect x="60" y="68" width="80" height="30" rx="6" fill="#202724"/>
+    <path d="M70 68 Q90 50 130 50 Q150 50 135 68Z" fill="#202724"/>
+    <rect x="72" y="53" width="25" height="16" rx="2" fill="#B2DDD7" opacity="0.7"/>
+    <rect x="102" y="53" width="25" height="16" rx="2" fill="#B2DDD7" opacity="0.7"/>
+    <circle cx="75" cy="100" r="10" fill="#131815"/>
+    <circle cx="75" cy="100" r="5" fill="#4F5752"/>
+    <circle cx="130" cy="100" r="10" fill="#131815"/>
+    <circle cx="130" cy="100" r="5" fill="#4F5752"/>
+    <rect x="135" y="78" width="10" height="6" rx="1" fill="#C9973A" opacity="0.8"/>
+    <!-- car 2 (back) -->
+    <rect x="175" y="72" width="70" height="26" rx="5" fill="#4F5752"/>
+    <path d="M183 72 Q195 58 225 58 Q240 58 238 72Z" fill="#4F5752"/>
+    <rect x="185" y="61" width="20" height="12" rx="2" fill="#B2DDD7" opacity="0.6"/>
+    <rect x="208" y="61" width="20" height="12" rx="2" fill="#B2DDD7" opacity="0.6"/>
+    <circle cx="188" cy="100" r="8" fill="#131815"/>
+    <circle cx="188" cy="100" r="4" fill="#4F5752"/>
+    <circle cx="232" cy="100" r="8" fill="#131815"/>
+    <circle cx="232" cy="100" r="4" fill="#4F5752"/>
+    <text x="80" y="128" font-size="11" fill="#4F5752" font-family="serif" font-weight="500">Executive Motors — Frota Executiva</text>
+  </svg>`
+};
 // ===== RENDER HELPERS =====
 function svcCard(s,i){
   const [bg,col]=provColors[i%provColors.length];
   const cc=catClass[s.cat]||'tag-teal';
+  const illustration=svcIllustrations[s.id]||'';
   return `<div class="svc-card" onclick="toast('Match iniciado com ${s.prov}! Aguarde o contato.')">
+    <div style="border-radius:8px;overflow:hidden;margin-bottom:10px">${illustration}</div>
     <div class="svc-top"><div><div class="svc-name">${s.nome}</div><span class="tag ${cc}" style="margin-top:6px">${s.cat}</span></div></div>
     <div class="svc-desc">${s.desc}</div>
     <div class="svc-price">${s.valor.toLocaleString('pt-BR')} <small style="font-size:14px">UniU</small></div>
@@ -1075,6 +1343,55 @@ function aceitarContrato(){
   if(!document.getElementById('aceite-check').checked){toast('Marque a caixa de aceite para continuar.','err');return}
   toast('Contrato aceito! Redirecionando para cadastro de serviço.');
   setTimeout(()=>nav('cadastro'),1600);
+}
+// ===== MODAL CADASTRO =====
+function abrirModalCadastro(){
+  document.getElementById('modal-cadastro').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function fecharModalCadastro(){
+  document.getElementById('modal-cadastro').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('modal-cadastro').addEventListener('click',function(e){
+  if(e.target===this) fecharModalCadastro();
+});
+function enviarCadastro(){
+  const nome=document.getElementById('mc-nome').value.trim();
+  const doc=document.getElementById('mc-doc').value.trim();
+  const tel=document.getElementById('mc-tel').value.trim();
+  const email=document.getElementById('mc-email').value.trim();
+  const desc=document.getElementById('mc-desc').value.trim();
+  if(!nome){toast('Informe seu nome ou razão social.','err');return}
+  if(!doc){toast('Informe o CPF ou CNPJ.','err');return}
+  if(!email||!email.includes('@')){toast('Informe um e-mail válido.','err');return}
+  if(!tel){toast('Informe o telefone.','err');return}
+  if(!desc){toast('Descreva o produto ou serviço.','err');return}
+  const assunto=encodeURIComponent('Novo Cadastro — Mundo das Permutas: '+nome);
+  const corpo=encodeURIComponent(
+    'NOVO CADASTRO — MUNDO DAS PERMUTAS
+
+'+
+    'Nome / Razão Social: '+nome+'
+'+
+    'CPF / CNPJ: '+doc+'
+'+
+    'E-mail: '+email+'
+'+
+    'Telefone / WhatsApp: '+tel+'
+
+'+
+    'DESCRIÇÃO DO PRODUTO OU SERVIÇO:
+'+desc+'
+
+'+
+    '---
+Enviado via site mundodaspermutas.com.br'
+  );
+  window.location.href='mailto:contato@mundodaspermutas.com.br?subject='+assunto+'&body='+corpo;
+  fecharModalCadastro();
+  toast('Abrindo seu e-mail... Envie a mensagem para concluir o cadastro!');
+  ['mc-nome','mc-doc','mc-tel','mc-email','mc-desc'].forEach(id=>document.getElementById(id).value='');
 }
 // ===== INIT =====
 renderFeatured();
